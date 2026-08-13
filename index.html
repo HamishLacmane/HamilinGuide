@@ -4,11 +4,25 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Hamilin Guide</title>
-<meta name="description" content="Hamilin Guide — a personal, Michelin-styled guide.">
+<meta name="description" content="Hamilin's personal guide to restaurants. A certain other guide has had the monopoly for too long and its recommendations suck. This is for the people.">
+<link rel="canonical" href="https://hamilinguide.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hamilin Guide">
+<meta property="og:title" content="Hamilin Guide">
+<meta property="og:description" content="Hamilin's personal guide to restaurants. A certain other guide has had the monopoly for too long and its recommendations suck. This is for the people.">
+<meta property="og:url" content="https://hamilinguide.com/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Hamilin Guide">
+<meta name="twitter:description" content="Hamilin's personal guide to restaurants. A certain other guide has had the monopoly for too long and its recommendations suck. This is for the people.">
+<!-- Favicon: closed red book (📕) — nod to Michelin's own nickname, "The Red Guide".
+     Undecided vs. open book (📖); may switch later. -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%95</text></svg>">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 <div class="page">
+
+  <h1 class="sr-only">Hamilin Guide — a personal, Michelin-styled guide to restaurants</h1>
 
   <header class="topbar">
     <div class="topbar-brand">
@@ -20,7 +34,7 @@
     <div class="nav-pills">
       <span class="nav-pill active">Restaurants</span>
       <span class="nav-pill soon">Hotels · coming soon</span>
-      <a class="nav-pill soon" href="/travel/">Travel guides · coming soon</a>
+      <span class="nav-pill soon">Travel guides · coming soon</span>
       <a class="nav-star-link" href="https://hamilinstar.com" target="_blank" rel="noopener">See every rating on Hamilin Star ↗</a>
     </div>
   </header>
@@ -189,7 +203,7 @@
       ? `<div class="star-badge"><span class="dot" style="background:${TIER_STYLE[dom.tier].dot}; color:${TIER_STYLE[dom.tier].dotInk};">★</span><span class="count" style="color:${TIER_STYLE[dom.tier].dotInk};">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`
       : '';
     const status = r.restaurant_status === 'Permanently Closed'
-      ? `<div class="rcard-status">Closed</div>` : '';
+      ? `<div class="rcard-status">Permanently Closed</div>` : '';
     return `<button type="button" class="rcard" data-name="${escapeHtml(r.name)}">
       <div class="rcard-photo">no photo yet</div>
       <div class="rcard-body">
