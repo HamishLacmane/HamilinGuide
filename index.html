@@ -12,32 +12,57 @@
 
   <header class="topbar">
     <div class="wordmark display"><a href="/">GUIDE</a></div>
-    <nav class="crumbs">
-      <a class="hub-link" href="https://hamilin.com">Hamilin</a>
-    </nav>
+    <div class="nav-pills">
+      <span class="nav-pill active">Restaurants</span>
+      <span class="nav-pill soon">Hotels · coming soon</span>
+      <a class="nav-pill soon" href="/travel/">Travel guides · coming soon</a>
+      <a class="nav-star-link" href="https://hamilinstar.com" target="_blank" rel="noopener">See every rating on Hamilin Star ↗</a>
+    </div>
   </header>
 
-  <section class="hero">
-    <p class="eyebrow">Hamilin Guide</p>
-    <h1 class="display"><!-- TODO(Hamish): headline --> placeholder text</h1>
-    <p><!-- TODO(Hamish): intro copy --></p>
+  <section class="guide-intro">
+    <!-- TODO(Hamish): intro copy — a couple of sentences about the guide -->
+    placeholder text
   </section>
 
-  <section class="tiles">
-    <a class="tile" href="/food/">
-      <div class="tile-head">
-        <span class="tile-name">Food</span>
-      </div>
-      <span class="tile-desc"><!-- TODO(Hamish): description --></span>
-    </a>
+  <section class="guide-filters" aria-label="Filter restaurants">
+    <select id="f-country" class="mono" aria-label="Country"><option value="">All countries</option></select>
+    <select id="f-city" class="mono" aria-label="City"><option value="">All cities</option></select>
+    <select id="f-cuisine" class="mono" aria-label="Cuisine"><option value="">All cuisines</option></select>
+    <button type="button" class="min-stars-toggle" id="min-stars-toggle">Min stars ▾</button>
+    <div class="min-stars-panel" id="min-stars-panel">
+      <div class="min-stars-field"><label for="min-gold">Min gold</label><input type="number" id="min-gold" min="0" value="0"></div>
+      <div class="min-stars-field"><label for="min-silver">Min silver</label><input type="number" id="min-silver" min="0" value="0"></div>
+      <div class="min-stars-field"><label for="min-bronze">Min bronze</label><input type="number" id="min-bronze" min="0" value="0"></div>
+      <div class="min-stars-field"><label for="min-total">Min total</label><input type="number" id="min-total" min="0" value="0"></div>
+    </div>
+  </section>
 
-    <a class="tile" href="/travel/">
-      <div class="tile-head">
-        <span class="tile-name">Travel</span>
-        <span class="tile-status">Soon</span>
-      </div>
-      <span class="tile-desc"><!-- TODO(Hamish): description --></span>
-    </a>
+  <section class="guide-section">
+    <h2>Top Picks</h2>
+    <!-- TODO(Hamish): one-line description -->
+    <p class="section-desc">placeholder text</p>
+    <div class="card-grid" id="section-top_picks"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>The Gelato Guru's Faves</h2>
+    <!-- TODO(Hamish): one-line description -->
+    <p class="section-desc">placeholder text</p>
+    <div class="card-grid" id="section-gelato_guru"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Gone But Not Forgotten <span style="color: var(--ink-muted); font-size: 0.9rem;">(Deprecated)</span></h2>
+    <!-- TODO(Hamish): one-line description -->
+    <p class="section-desc">placeholder text</p>
+    <div class="card-grid" id="section-gone_but_not_forgotten"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>All</h2>
+    <p class="section-desc">Every restaurant in the guide, unsorted.</p>
+    <p class="section-empty">Coming soon</p>
   </section>
 
   <footer>
@@ -45,5 +70,202 @@
   </footer>
 
 </div>
+
+<div class="guide-modal-backdrop" id="modal-backdrop">
+  <div class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+    <div class="guide-modal-photo">no photo yet</div>
+    <div class="guide-modal-body">
+      <button type="button" class="guide-modal-close" id="modal-close" aria-label="Close">✕</button>
+      <p class="guide-modal-name" id="modal-name"></p>
+      <p class="guide-modal-loc" id="modal-loc"></p>
+      <p class="guide-modal-status" id="modal-status" hidden></p>
+      <span class="guide-modal-category" id="modal-category" hidden></span>
+      <div class="dish-list" id="modal-dishes"></div>
+      <p class="guide-modal-comment"><!-- TODO(Hamish): your comment about this place --> placeholder text</p>
+      <div class="guide-modal-tags"><span><!-- TODO --> placeholder tag</span></div>
+      <a class="guide-modal-maps" id="modal-maps" href="#" target="_blank" rel="noopener" hidden>View on Google Maps ↗</a>
+      <p class="guide-modal-maps" id="modal-maps-none" style="color: var(--ink-muted);" hidden>No map link yet</p>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function () {
+  const SECTIONS = [
+    { key: 'top_picks', el: 'section-top_picks' },
+    { key: 'gelato_guru', el: 'section-gelato_guru' },
+    { key: 'gone_but_not_forgotten', el: 'section-gone_but_not_forgotten' }
+  ];
+  const TIER_ORDER = ['Gold', 'Silver', 'Bronze', 'No Star'];
+  const TIER_STYLE = {
+    'Gold': { dot: 'var(--gold-bg)', dotInk: 'var(--gold-ink)', tint: 'var(--gold-tint)', ink: 'var(--gold-ink)' },
+    'Silver': { dot: 'var(--silver-bg)', dotInk: 'var(--silver-ink)', tint: 'var(--silver-tint)', ink: 'var(--silver-ink)' },
+    'Bronze': { dot: 'var(--bronze-bg)', dotInk: 'var(--bronze-ink)', tint: 'var(--bronze-tint)', ink: 'var(--bronze-ink)' },
+    'No Star': { dot: 'var(--nostar-bg)', dotInk: 'var(--nostar-ink)', tint: 'var(--nostar-tint)', ink: 'var(--nostar-ink)' }
+  };
+  const CATEGORY_LABEL = {
+    top_picks: 'Top Picks',
+    gelato_guru: "The Gelato Guru's Faves",
+    gone_but_not_forgotten: 'Gone But Not Forgotten'
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function dominantTier(dishes) {
+    for (const tier of TIER_ORDER) {
+      const count = dishes.filter(d => d.tier === tier).length;
+      if (count > 0) return { tier, count };
+    }
+    return null;
+  }
+
+  const els = {
+    country: document.getElementById('f-country'),
+    city: document.getElementById('f-city'),
+    cuisine: document.getElementById('f-cuisine'),
+    minGold: document.getElementById('min-gold'),
+    minSilver: document.getElementById('min-silver'),
+    minBronze: document.getElementById('min-bronze'),
+    minTotal: document.getElementById('min-total'),
+    toggle: document.getElementById('min-stars-toggle'),
+    panel: document.getElementById('min-stars-panel')
+  };
+
+  els.toggle.addEventListener('click', () => els.panel.classList.toggle('open'));
+
+  let data = [];
+  try {
+    const res = await fetch('data/guide.sample.json');
+    data = await res.json();
+  } catch (err) {
+    document.querySelectorAll('.card-grid').forEach(g => {
+      g.outerHTML = `<p class="section-empty">Couldn't load guide data (${escapeHtml(err.message)}).</p>`;
+    });
+    return;
+  }
+
+  function populateSelect(el, values) {
+    for (const v of values) {
+      const opt = document.createElement('option');
+      opt.value = v;
+      opt.textContent = v;
+      el.appendChild(opt);
+    }
+  }
+  populateSelect(els.country, [...new Set(data.map(r => r.country).filter(Boolean))].sort());
+  populateSelect(els.city, [...new Set(data.map(r => r.city).filter(Boolean))].sort());
+  populateSelect(els.cuisine, [...new Set(data.flatMap(r => r.cuisine_tags || []))].sort());
+
+  function tierCounts(dishes) {
+    const c = { Gold: 0, Silver: 0, Bronze: 0 };
+    for (const d of dishes) if (c[d.tier] !== undefined) c[d.tier]++;
+    c.total = c.Gold + c.Silver + c.Bronze;
+    return c;
+  }
+
+  function matchesFilters(r) {
+    if (els.country.value && r.country !== els.country.value) return false;
+    if (els.city.value && r.city !== els.city.value) return false;
+    if (els.cuisine.value && !(r.cuisine_tags || []).includes(els.cuisine.value)) return false;
+    const c = tierCounts(r.dishes || []);
+    if (c.Gold < (+els.minGold.value || 0)) return false;
+    if (c.Silver < (+els.minSilver.value || 0)) return false;
+    if (c.Bronze < (+els.minBronze.value || 0)) return false;
+    if (c.total < (+els.minTotal.value || 0)) return false;
+    return true;
+  }
+
+  function cardHtml(r) {
+    const dom = dominantTier(r.dishes || []);
+    const badge = dom
+      ? `<div class="star-badge"><span class="dot" style="background:${TIER_STYLE[dom.tier].dot}; color:${TIER_STYLE[dom.tier].dotInk};">★</span><span class="count" style="color:${TIER_STYLE[dom.tier].dotInk};">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`
+      : '';
+    const status = r.restaurant_status === 'Permanently Closed'
+      ? `<div class="rcard-status">Closed</div>` : '';
+    const catClass = (r.categories || [])[0] ? `cat-${r.categories[0]}` : '';
+    return `<button type="button" class="rcard ${catClass}" data-name="${escapeHtml(r.name)}">
+      <div class="rcard-photo">no photo yet</div>
+      <div class="rcard-body">
+        ${badge}
+        <div class="rcard-name">${escapeHtml(r.name)}</div>
+        ${status}
+      </div>
+    </button>`;
+  }
+
+  function render() {
+    for (const s of SECTIONS) {
+      const el = document.getElementById(s.el);
+      const rows = data.filter(r => (r.categories || []).includes(s.key) && matchesFilters(r));
+      el.innerHTML = rows.length
+        ? rows.map(cardHtml).join('')
+        : `<p class="section-empty">Nothing here yet</p>`;
+    }
+    document.querySelectorAll('.rcard').forEach(btn => {
+      btn.addEventListener('click', () => openModal(btn.dataset.name));
+    });
+  }
+
+  for (const el of [els.country, els.city, els.cuisine, els.minGold, els.minSilver, els.minBronze, els.minTotal]) {
+    el.addEventListener('input', render);
+    el.addEventListener('change', render);
+  }
+
+  const modal = {
+    backdrop: document.getElementById('modal-backdrop'),
+    name: document.getElementById('modal-name'),
+    loc: document.getElementById('modal-loc'),
+    status: document.getElementById('modal-status'),
+    category: document.getElementById('modal-category'),
+    dishes: document.getElementById('modal-dishes'),
+    maps: document.getElementById('modal-maps'),
+    mapsNone: document.getElementById('modal-maps-none')
+  };
+
+  function openModal(name) {
+    const r = data.find(x => x.name === name);
+    if (!r) return;
+    modal.name.textContent = r.name;
+    modal.loc.textContent = [r.location_name, r.city, r.country].filter(Boolean).join(', ')
+      + (r.cuisine_tags && r.cuisine_tags.length ? ' · ' + r.cuisine_tags.join(', ') : '');
+    if (r.restaurant_status === 'Permanently Closed') {
+      modal.status.textContent = 'Permanently closed';
+      modal.status.hidden = false;
+    } else {
+      modal.status.hidden = true;
+    }
+    const cat = (r.categories || [])[0];
+    if (cat && CATEGORY_LABEL[cat]) {
+      modal.category.textContent = CATEGORY_LABEL[cat];
+      modal.category.hidden = false;
+    } else {
+      modal.category.hidden = true;
+    }
+    modal.dishes.innerHTML = (r.dishes || []).map(d => {
+      const style = TIER_STYLE[d.tier] || TIER_STYLE['No Star'];
+      return `<div class="dish-row" style="background:${style.tint}; color:${style.ink};">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
+    }).join('');
+    if (r.gmaps_url) {
+      modal.maps.href = r.gmaps_url;
+      modal.maps.hidden = false;
+      modal.mapsNone.hidden = true;
+    } else {
+      modal.maps.hidden = true;
+      modal.mapsNone.hidden = false;
+    }
+    modal.backdrop.classList.add('open');
+  }
+
+  function closeModal() { modal.backdrop.classList.remove('open'); }
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  modal.backdrop.addEventListener('click', e => { if (e.target === modal.backdrop) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  render();
+})();
+</script>
+
 </body>
 </html>
