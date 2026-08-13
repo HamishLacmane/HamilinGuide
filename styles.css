@@ -10,8 +10,24 @@
   --paper-sunken: #EEEEEE;
   --ink: #191919;
   --ink-soft: #666666;
+  --ink-muted: #ADADAD;
   --hairline: rgba(0,0,0,0.12);
   --accent: #BA0B2F;
+  --gold-bg: #EF9F27;
+  --gold-tint: #FAEEDA;
+  --gold-ink: #412402;
+  --silver-bg: #9CA3AF;
+  --silver-tint: #EEEEEE;
+  --silver-ink: #292D33;
+  --bronze-bg: #C97C42;
+  --bronze-tint: #F6E3D3;
+  --bronze-ink: #2C1608;
+  --nostar-bg: #8A8A8A;
+  --nostar-tint: #EEEEEE;
+  --nostar-ink: #333333;
+  --cat-top_picks: #BA0B2F;
+  --cat-gelato_guru: #6B8E5A;
+  --cat-gone_but_not_forgotten: #9B9B93;
 }
 
 * { box-sizing: border-box; }
@@ -151,3 +167,221 @@ footer {
   font-size: 0.8rem;
   color: var(--ink-soft);
 }
+
+/* ---------- restaurant guide nav pills ---------- */
+.nav-pills { display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; }
+.nav-pill {
+  font-family: Consolas, monospace;
+  font-size: 0.78rem;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: 0.3rem 0.7rem;
+  color: var(--ink);
+  text-decoration: none;
+}
+.nav-pill.active { border-color: var(--ink); }
+.nav-pill.soon { color: var(--ink-muted); border-color: var(--hairline); cursor: default; }
+.nav-star-link {
+  font-family: Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+  border-left: 1px solid var(--hairline);
+  padding-left: 0.75rem;
+}
+.nav-star-link:hover, .nav-star-link:focus-visible { text-decoration: underline; }
+
+/* ---------- intro text box ---------- */
+.guide-intro {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--hairline);
+  font-size: 0.95rem;
+  color: var(--ink);
+  max-width: 60ch;
+}
+
+/* ---------- filter bar ---------- */
+.guide-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.guide-filters select {
+  font-family: Consolas, monospace;
+  font-size: 0.78rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.min-stars-toggle {
+  font-family: Consolas, monospace;
+  font-size: 0.78rem;
+  padding: 0.35rem 0.6rem;
+  border: 1px solid var(--accent);
+  border-radius: 3px;
+  color: var(--accent);
+  background: var(--paper);
+  cursor: pointer;
+}
+.min-stars-panel {
+  display: none;
+  flex-basis: 100%;
+  gap: 0.75rem;
+  background: var(--paper-sunken);
+  padding: 0.75rem 0.9rem;
+  border-radius: 4px;
+  flex-wrap: wrap;
+}
+.min-stars-panel.open { display: flex; }
+.min-stars-field { display: flex; flex-direction: column; gap: 0.2rem; }
+.min-stars-field label { font-family: Consolas, monospace; font-size: 0.68rem; color: var(--ink-soft); }
+.min-stars-field input {
+  width: 4.5rem;
+  font-family: Consolas, monospace;
+  font-size: 0.8rem;
+  padding: 0.25rem 0.4rem;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+}
+
+/* ---------- guide sections ---------- */
+.guide-section { padding: 1.75rem 0; border-bottom: 1px solid var(--hairline); }
+.guide-section:last-child { border-bottom: none; }
+.guide-section h2 {
+  font-family: "Bahnschrift", sans-serif;
+  font-variation-settings: "wght" 600, "wdth" 90;
+  font-size: 1.3rem;
+  margin: 0 0 0.15rem;
+}
+.guide-section .section-desc { font-size: 0.85rem; color: var(--ink-soft); margin: 0 0 1rem; }
+.guide-section .section-empty {
+  font-family: Consolas, monospace;
+  font-size: 0.8rem;
+  color: var(--ink-muted);
+  border: 1px dashed var(--hairline);
+  border-radius: 6px;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* ---------- restaurant card grid ---------- */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 0.9rem;
+}
+.rcard {
+  border: 1px solid var(--hairline);
+  border-left: 4px solid var(--hairline);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--paper);
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  padding: 0;
+}
+.rcard:hover, .rcard:focus-visible { border-color: var(--ink); }
+.rcard.cat-top_picks { border-left-color: var(--cat-top_picks); }
+.rcard.cat-gelato_guru { border-left-color: var(--cat-gelato_guru); }
+.rcard.cat-gone_but_not_forgotten { border-left-color: var(--cat-gone_but_not_forgotten); opacity: 0.85; }
+.rcard-photo {
+  height: 56px;
+  background: var(--paper-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  font-family: Consolas, monospace;
+  font-size: 0.7rem;
+}
+.rcard-body { padding: 0.6rem 0.7rem; }
+.star-badge { display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem; }
+.star-badge .dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  line-height: 1;
+}
+.star-badge .count { font-family: Consolas, monospace; font-size: 0.72rem; }
+.rcard-name { font-family: "Bahnschrift", sans-serif; font-variation-settings: "wght" 600, "wdth" 90; font-size: 0.9rem; }
+.rcard-status { font-family: Consolas, monospace; font-size: 0.68rem; color: var(--accent); margin-top: 0.2rem; }
+
+/* ---------- modal ---------- */
+.guide-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 10;
+}
+.guide-modal-backdrop.open { display: flex; }
+.guide-modal {
+  background: var(--paper);
+  border-radius: 10px;
+  max-width: 380px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+}
+.guide-modal-photo {
+  height: 90px;
+  background: var(--paper-sunken);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--ink-muted);
+  font-family: Consolas, monospace;
+  font-size: 0.72rem;
+}
+.guide-modal-body { padding: 1rem 1.15rem 1.25rem; position: relative; }
+.guide-modal-close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.7rem;
+  background: none;
+  border: none;
+  font-size: 1.1rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+  line-height: 1;
+}
+.guide-modal-name { font-family: "Bahnschrift", sans-serif; font-variation-settings: "wght" 700, "wdth" 88; font-size: 1.15rem; margin: 0.3rem 0 0.1rem; }
+.guide-modal-loc { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.15rem; }
+.guide-modal-status { font-family: Consolas, monospace; font-size: 0.72rem; color: var(--accent); margin-bottom: 0.5rem; }
+.guide-modal-category {
+  display: inline-block;
+  background: var(--ink);
+  color: var(--paper);
+  font-family: Consolas, monospace;
+  font-size: 0.68rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 3px;
+  margin-bottom: 0.75rem;
+}
+.dish-list { display: flex; flex-direction: column; gap: 0.3rem; margin-bottom: 0.75rem; }
+.dish-row { font-size: 0.8rem; padding: 0.35rem 0.6rem; border-radius: 4px; }
+.guide-modal-comment { font-size: 0.85rem; line-height: 1.5; margin: 0 0 0.6rem; color: var(--ink); }
+.guide-modal-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
+.guide-modal-tags span {
+  font-family: Consolas, monospace;
+  font-size: 0.68rem;
+  border: 1px solid var(--hairline);
+  border-radius: 3px;
+  padding: 0.15rem 0.45rem;
+}
+.guide-modal-maps { font-family: Consolas, monospace; font-size: 0.78rem; color: var(--accent); text-decoration: none; }
+.guide-modal-maps:hover { text-decoration: underline; }
