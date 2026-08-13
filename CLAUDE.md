@@ -44,8 +44,8 @@ Before pushing any HTML/CSS/JS change, serve the repo locally (`python -m http.s
 - Build the "All" section for real (currently a static "Coming soon").
 - An About page (requested 2026-08-13, not started).
 - Decide whether to ever commit real photos, and whether/how to handle the "avoid" red tier idea.
-- Favicon (Hub/Guide/Cards/Lacmane all still need one — HamilinStar already has its ⭐).
-- SEO basics (HamilinStar already has a pass done — Guide doesn't yet).
+- Favicon and SEO pass — **done 2026-08-13**: favicon is 📕 (closed red book, a nod to Michelin's own "Red Guide" nickname — Hamish is undecided vs. 📖 open book, may switch later); meta description/OG/Twitter Card tags, canonical link, and a visually-hidden `<h1>` all added, mirroring Star's existing pass. Hub/Cards/Lacmane still need their own favicon + SEO work.
+- `/travel/` page removed 2026-08-13 — travel is TBD, not needed yet. "Travel guides" nav pill is now a plain unclickable `<span>`, matching "Hotels." Recreate the page (and re-link the pill) once travel content is actually ready — see the git history for the deleted stub if it's a useful starting point.
 
 ## Licence
 

@@ -13,18 +13,18 @@
   --ink-muted: #ADADAD;
   --hairline: rgba(0,0,0,0.12);
   --accent: #BA0B2F;
-  --gold-bg: #EF9F27;
-  --gold-tint: #FAEEDA;
-  --gold-ink: #412402;
-  --silver-bg: #9CA3AF;
-  --silver-tint: #EEEEEE;
-  --silver-ink: #292D33;
-  --bronze-bg: #C97C42;
-  --bronze-tint: #F6E3D3;
-  --bronze-ink: #2C1608;
-  --nostar-bg: #8A8A8A;
-  --nostar-tint: #EEEEEE;
-  --nostar-ink: #333333;
+  --gold-bg: #D9BE6C;
+  --gold-tint: #F0DA9A;
+  --gold-ink: #6B4E00;
+  --silver-bg: #C2C2C2;
+  --silver-tint: #DCDCDC;
+  --silver-ink: #45484B;
+  --bronze-bg: #B25E2F;
+  --bronze-tint: #E3B48C;
+  --bronze-ink: #6B3612;
+  --nostar-bg: #D69A9A;
+  --nostar-tint: #E7B8B8;
+  --nostar-ink: #7A1F1F;
   --cat-top_picks: #BA0B2F;
   --cat-gelato_guru: #6B8E5A;
   --cat-gone_but_not_forgotten: #9B9B93;
@@ -83,38 +83,6 @@ nav.crumbs {
 nav.crumbs a { color: var(--ink-soft); text-decoration: none; }
 nav.crumbs a:hover, nav.crumbs a:focus-visible { color: var(--accent); }
 nav.crumbs .hub-link::before { content: "← "; }
-
-/* ---------- hero ---------- */
-.hero { padding: 3rem 0 2.5rem; max-width: 34rem; }
-.hero .eyebrow {
-  font-family: Consolas, ui-monospace, monospace;
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 0.9rem;
-}
-.hero h1 {
-  font-size: clamp(1.9rem, 5vw, 2.9rem);
-  line-height: 1.12;
-  margin: 0 0 0.75rem;
-  text-wrap: balance;
-}
-.hero p { color: var(--ink-soft); max-width: 46ch; }
-
-/* ---------- coming soon (travel page) ---------- */
-.soon-badge {
-  display: inline-block;
-  font-family: Consolas, monospace;
-  font-size: 0.7rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 2px;
-  padding: 0.25rem 0.6rem;
-  margin-bottom: 1rem;
-}
 
 footer {
   margin-top: 2rem;
@@ -340,3 +308,15 @@ footer {
 }
 .guide-modal-maps { font-family: Consolas, monospace; font-size: 0.78rem; color: var(--accent); text-decoration: none; }
 .guide-modal-maps:hover { text-decoration: underline; }
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
