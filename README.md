@@ -13,7 +13,7 @@ A personal, Michelin-styled guide — part of the Hamilin brand family. Static s
 
 ## Palette
 
-Unlike Hamilin Hub (which has a switchable multi-palette system), Guide's colours are **fixed** to Michelin's own — white ground, near-black ink, `#BA0B2F` red accent — defined once in `styles.css`. This is deliberate: Guide is a tongue-in-cheek parody of the Michelin Guide and wears their palette on purpose, regardless of whatever direction the rest of the Hamilin family ends up using. Each guide category also gets its own accent colour (a left-border stripe on cards) — crimson for Top Picks, pistachio green for The Gelato Guru's Faves, muted grey for Gone But Not Forgotten.
+Unlike Hamilin Hub (which has a switchable multi-palette system), Guide's colours are **fixed** to Michelin's own — white ground, near-black ink, `#BA0B2F` red accent — defined once in `styles.css`. This is deliberate: Guide is a tongue-in-cheek parody of the Michelin Guide and wears their palette on purpose, regardless of whatever direction the rest of the Hamilin family ends up using. Each guide category also gets its own accent colour — crimson for Top Picks, pistachio green for The Gelato Guru's Faves, muted grey for Gone But Not Forgotten — applied to the category badge inside the expanded modal card; the grid card itself stays a plain uncoloured hairline border.
 
 ## Status
 

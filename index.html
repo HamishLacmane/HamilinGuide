@@ -85,6 +85,7 @@
       <div class="guide-modal-tags"><span><!-- TODO --> placeholder tag</span></div>
       <a class="guide-modal-maps" id="modal-maps" href="#" target="_blank" rel="noopener" hidden>View on Google Maps ↗</a>
       <p class="guide-modal-maps" id="modal-maps-none" style="color: var(--ink-muted);" hidden>No map link yet</p>
+      <a class="guide-modal-maps" id="modal-star-link" href="#" target="_blank" rel="noopener" style="display: block; margin-top: 0.35rem;">See all ratings for this restaurant on Hamilin Star ↗</a>
     </div>
   </div>
 </div>
@@ -184,8 +185,7 @@
       : '';
     const status = r.restaurant_status === 'Permanently Closed'
       ? `<div class="rcard-status">Closed</div>` : '';
-    const catClass = (r.categories || [])[0] ? `cat-${r.categories[0]}` : '';
-    return `<button type="button" class="rcard ${catClass}" data-name="${escapeHtml(r.name)}">
+    return `<button type="button" class="rcard" data-name="${escapeHtml(r.name)}">
       <div class="rcard-photo">no photo yet</div>
       <div class="rcard-body">
         ${badge}
@@ -221,7 +221,8 @@
     category: document.getElementById('modal-category'),
     dishes: document.getElementById('modal-dishes'),
     maps: document.getElementById('modal-maps'),
-    mapsNone: document.getElementById('modal-maps-none')
+    mapsNone: document.getElementById('modal-maps-none'),
+    starLink: document.getElementById('modal-star-link')
   };
 
   function openModal(name) {
@@ -237,8 +238,10 @@
       modal.status.hidden = true;
     }
     const cat = (r.categories || [])[0];
+    modal.category.className = 'guide-modal-category';
     if (cat && CATEGORY_LABEL[cat]) {
       modal.category.textContent = CATEGORY_LABEL[cat];
+      modal.category.classList.add(`cat-${cat}`);
       modal.category.hidden = false;
     } else {
       modal.category.hidden = true;
@@ -255,6 +258,7 @@
       modal.maps.hidden = true;
       modal.mapsNone.hidden = false;
     }
+    modal.starLink.href = 'https://hamilinstar.com/stars.html?restaurant=' + encodeURIComponent(r.name);
     modal.backdrop.classList.add('open');
   }
 
