@@ -58,7 +58,7 @@
   </section>
 
   <section class="guide-section">
-    <h2>Top Picks</h2>
+    <h2>Top Picks <span style="color: var(--ink-muted); font-size: 0.9rem;">(Recommended)</span></h2>
     <!-- TODO(Hamish): one-line description -->
     <p class="section-desc">placeholder text</p>
     <div class="card-grid" id="section-top_picks"></div>
@@ -81,11 +81,11 @@
   <section class="guide-section">
     <h2>All</h2>
     <p class="section-desc">Every restaurant in the guide, unsorted.</p>
-    <p class="section-empty">Coming soon</p>
+    <div class="card-grid" id="section-all"></div>
   </section>
 
   <footer>
-    <p class="mono">© 2026 Hamish Lacmane. All rights reserved.</p>
+    <p class="mono"><a href="/about/">About</a> · © 2026 Hamish Lacmane. All rights reserved.</p>
   </footer>
 
 </div>
@@ -100,8 +100,8 @@
       <p class="guide-modal-status" id="modal-status" hidden></p>
       <span class="guide-modal-category" id="modal-category" hidden></span>
       <div class="dish-list" id="modal-dishes"></div>
-      <p class="guide-modal-comment"><!-- TODO(Hamish): your comment about this place --> placeholder text</p>
-      <div class="guide-modal-tags"><span><!-- TODO --> placeholder tag</span></div>
+      <p class="guide-modal-comment" id="modal-comment"></p>
+      <div class="guide-modal-tags" id="modal-tags"></div>
       <a class="guide-modal-maps" id="modal-maps" href="#" target="_blank" rel="noopener" hidden>View on Google Maps ↗</a>
       <p class="guide-modal-maps" id="modal-maps-none" style="color: var(--ink-muted);" hidden>No map link yet</p>
       <a class="guide-modal-maps" id="modal-star-link" href="#" target="_blank" rel="noopener" style="display: block; margin-top: 0.35rem;">See all ratings for this restaurant on Hamilin Star ↗</a>
@@ -157,7 +157,7 @@
 
   let data = [];
   try {
-    const res = await fetch('data/guide.sample.json');
+    const res = await fetch('data/guide.json');
     data = await res.json();
   } catch (err) {
     document.querySelectorAll('.card-grid').forEach(g => {
@@ -222,6 +222,16 @@
         ? rows.map(cardHtml).join('')
         : `<p class="section-empty">Nothing here yet</p>`;
     }
+    // "All" = every restaurant with at least one Guide category (in
+    // practice this is already every restaurant in `data`, since
+    // export_guide.sql only ever includes restaurants that have one —
+    // the explicit check here just makes that intent visible in code,
+    // not a real filter against anything broader).
+    const allEl = document.getElementById('section-all');
+    const allRows = data.filter(r => (r.categories || []).length > 0 && matchesFilters(r));
+    allEl.innerHTML = allRows.length
+      ? allRows.map(cardHtml).join('')
+      : `<p class="section-empty">Nothing here yet</p>`;
     document.querySelectorAll('.rcard').forEach(btn => {
       btn.addEventListener('click', () => openModal(btn.dataset.name));
     });
@@ -239,6 +249,8 @@
     status: document.getElementById('modal-status'),
     category: document.getElementById('modal-category'),
     dishes: document.getElementById('modal-dishes'),
+    comment: document.getElementById('modal-comment'),
+    tags: document.getElementById('modal-tags'),
     maps: document.getElementById('modal-maps'),
     mapsNone: document.getElementById('modal-maps-none'),
     starLink: document.getElementById('modal-star-link')
@@ -256,7 +268,12 @@
     } else {
       modal.status.hidden = true;
     }
-    const cat = (r.categories || [])[0];
+    // Prefer a category the site actually renders a section/badge for.
+    // "desserts" (added 2026-08-14) has no section built yet, so a
+    // restaurant tagged only Desserts + a real section (e.g. Gelato Guru)
+    // must not have its badge silently swallowed just because "desserts"
+    // sorts first alphabetically in the array.
+    const cat = (r.categories || []).find(c => CATEGORY_LABEL[c]);
     modal.category.className = 'guide-modal-category';
     if (cat && CATEGORY_LABEL[cat]) {
       modal.category.textContent = CATEGORY_LABEL[cat];
@@ -269,6 +286,15 @@
       const style = TIER_STYLE[d.tier] || TIER_STYLE['No Star'];
       return `<div class="dish-row" style="background:${style.tint}; color:${style.ink};">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
     }).join('');
+    // No real "Guide Comment" data source yet (2026-08-14) — r.comment is
+    // always null until that field is built; keep showing the literal
+    // placeholder per the site's "content is placeholder" rule.
+    modal.comment.innerHTML = r.comment
+      ? escapeHtml(r.comment)
+      : '<!-- TODO(Hamish): your comment about this place --> placeholder text';
+    modal.tags.innerHTML = (r.cuisine_tags && r.cuisine_tags.length)
+      ? r.cuisine_tags.map(t => `<span>${escapeHtml(t)}</span>`).join('')
+      : '<span><!-- TODO --> placeholder tag</span>';
     if (r.gmaps_url) {
       modal.maps.href = r.gmaps_url;
       modal.maps.hidden = false;
