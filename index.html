@@ -40,8 +40,7 @@
   </header>
 
   <section class="guide-intro">
-    <!-- TODO(Hamish): intro copy — a couple of sentences about the guide -->
-    placeholder text
+    Hamilin's personal guide to restaurants. A certain other guide has had the monopoly for too long and its recommendations suck. This is for the people.
   </section>
 
   <section class="guide-filters" aria-label="Filter restaurants">
@@ -59,22 +58,19 @@
 
   <section class="guide-section">
     <h2>Top Picks <span style="color: var(--ink-muted); font-size: 0.9rem;">(Recommended)</span></h2>
-    <!-- TODO(Hamish): one-line description -->
-    <p class="section-desc">placeholder text</p>
+    <p class="section-desc">Best places in the world I've tried so far!</p>
     <div class="card-grid" id="section-top_picks"></div>
   </section>
 
   <section class="guide-section">
     <h2>The Gelato Guru's Faves</h2>
-    <!-- TODO(Hamish): one-line description -->
-    <p class="section-desc">placeholder text</p>
+    <p class="section-desc">Word's cannot describe how much Gelato I would eat at these.</p>
     <div class="card-grid" id="section-gelato_guru"></div>
   </section>
 
   <section class="guide-section">
     <h2>Gone But Not Forgotten <span style="color: var(--ink-muted); font-size: 0.9rem;">(Deprecated)</span></h2>
-    <!-- TODO(Hamish): one-line description -->
-    <p class="section-desc">placeholder text</p>
+    <p class="section-desc">Legends that deserve their roses.</p>
     <div class="card-grid" id="section-gone_but_not_forgotten"></div>
   </section>
 
@@ -214,13 +210,38 @@
     </button>`;
   }
 
+  // Each section shows at most this many cards until expanded — keeps a
+  // category with dozens of entries from turning the homepage into an
+  // endless scroll (requested 2026-08-14).
+  const CARD_LIMIT = 5;
+  const expandedSections = new Set();
+
+  function toggleSection(key) {
+    if (expandedSections.has(key)) expandedSections.delete(key);
+    else expandedSections.add(key);
+    render();
+  }
+
+  function renderSection(el, rows, key) {
+    if (!rows.length) {
+      el.innerHTML = `<p class="section-empty">Nothing here yet</p>`;
+      return;
+    }
+    const isExpanded = expandedSections.has(key);
+    const shown = isExpanded ? rows : rows.slice(0, CARD_LIMIT);
+    let html = shown.map(cardHtml).join('');
+    if (rows.length > CARD_LIMIT) {
+      const label = isExpanded ? 'Show fewer' : `Show all ${rows.length} ↓`;
+      html += `<button type="button" class="section-toggle" data-section="${key}">${label}</button>`;
+    }
+    el.innerHTML = html;
+  }
+
   function render() {
     for (const s of SECTIONS) {
       const el = document.getElementById(s.el);
       const rows = data.filter(r => (r.categories || []).includes(s.key) && matchesFilters(r));
-      el.innerHTML = rows.length
-        ? rows.map(cardHtml).join('')
-        : `<p class="section-empty">Nothing here yet</p>`;
+      renderSection(el, rows, s.key);
     }
     // "All" = every restaurant with at least one Guide category (in
     // practice this is already every restaurant in `data`, since
@@ -229,11 +250,12 @@
     // not a real filter against anything broader).
     const allEl = document.getElementById('section-all');
     const allRows = data.filter(r => (r.categories || []).length > 0 && matchesFilters(r));
-    allEl.innerHTML = allRows.length
-      ? allRows.map(cardHtml).join('')
-      : `<p class="section-empty">Nothing here yet</p>`;
+    renderSection(allEl, allRows, 'all');
     document.querySelectorAll('.rcard').forEach(btn => {
       btn.addEventListener('click', () => openModal(btn.dataset.name));
+    });
+    document.querySelectorAll('.section-toggle').forEach(btn => {
+      btn.addEventListener('click', () => toggleSection(btn.dataset.section));
     });
   }
 
