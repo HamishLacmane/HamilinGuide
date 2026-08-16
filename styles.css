@@ -276,6 +276,7 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   font-family: Consolas, monospace;
   font-size: 0.7rem;
 }
+.rcard-photo .rphoto-icon { width: 28px; height: 28px; color: var(--ink-soft); }
 .rcard-body { padding: 0.6rem 0.7rem; }
 .star-badge { display: inline-flex; align-items: center; gap: 0.4rem; margin-bottom: 0.35rem; }
 .star-badge .dot {
@@ -322,6 +323,7 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   font-family: Consolas, monospace;
   font-size: 0.72rem;
 }
+.guide-modal-photo .rphoto-icon { width: 40px; height: 40px; color: var(--ink-soft); }
 .guide-modal-body { padding: 1rem 1.15rem 1.25rem; position: relative; }
 .guide-modal-close {
   position: absolute;
