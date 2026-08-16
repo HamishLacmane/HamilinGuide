@@ -305,6 +305,12 @@
       modal.category.hidden = true;
     }
     modal.dishes.innerHTML = (r.dishes || []).map(d => {
+      // "No Star" reads as "not endorsed", not another tier colour — plain
+      // transparent/outline treatment (.no-star in styles.css) rather than
+      // a tinted background, per Hamish's explicit preference 2026-08-16.
+      if (d.tier === 'No Star') {
+        return `<div class="dish-row no-star">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
+      }
       const style = TIER_STYLE[d.tier] || TIER_STYLE['No Star'];
       return `<div class="dish-row" style="background:${style.tint}; color:${style.ink};">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
     }).join('');

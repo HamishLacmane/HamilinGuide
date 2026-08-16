@@ -10,7 +10,8 @@ A static site (no framework, no build step, no package.json) — `index.html` is
 
 ## Design — modelled on a real Michelin Guide screenshot, iterated with Hamish over several rounds on 2026-08-13
 
-- **Nav**: `GUIDE` wordmark, pill-style tabs (`Restaurants` active, `Hotels`/`Travel guides` greyed "coming soon" — Travel guides links to the real `/travel/` stub since that page exists, Hotels doesn't link anywhere since no page exists yet), plus a clearly-labelled outbound link "See every rating on Hamilin Star ↗" so it's obvious that leads to the full/unfiltered data on the sister site, not more Guide content.
+- **Nav**: `GUIDE` wordmark, pill-style tabs (`Restaurants` active, `Hotels`/`Travel guides` greyed "coming soon" — both plain unclickable `<span>`s, no page exists for either; `/travel/` was removed 2026-08-13, travel content is TBD), plus a clearly-labelled outbound link "See every rating on Hamilin Star ↗" so it's obvious that leads to the full/unfiltered data on the sister site, not more Guide content.
+- **Section expand/collapse (added 2026-08-14)**: each section shows at most 5 cards by default, with a "Show all N ↓ / Show fewer" toggle (full-width row, `grid-column: 1 / -1`) once a section has more. State is per-section and survives filter changes.
 - **Intro text box** directly under the nav — placeholder only, Hamish writes his own (see "Content is all placeholder" below).
 - **Filter bar**: Country / City / Cuisine dropdowns (populated from whatever's in the loaded data) plus a "Min stars ▾" toggle that reveals four number inputs — minimum gold / silver / bronze / total. These are floors ("at least N"), not exact matches, by explicit request.
 - **Sections, in this order, title case** (deliberately capitalizing small words like "But" too — not standard title-case rules, Hamish asked for it explicitly): **Top Picks**, **The Gelato Guru's Faves**, **Gone But Not Forgotten (Deprecated)** — "Deprecated" is a parenthetical qualifier on this section, not its own section — and **All**, which is intentionally just a "Coming soon" placeholder, not wired to real data yet. Every section heading is bigger than body text with a one-line description underneath (also placeholder).
@@ -47,14 +48,17 @@ Every headline, intro paragraph, guide entry description, comment, and tag acros
 
 Before pushing any HTML/CSS/JS change, serve the repo locally (`python -m http.server <port>` from the repo root, or the `hamilinguide-local` launch config) and check it in the Browser tool — `read_console_messages` for JS errors, `javascript_tool` to inspect rendered DOM, click cards, and toggle filters, not just eyeballing. Same approach already established for HamilinStar.
 
-## Still to do (as of 2026-08-13)
+## Still to do (as of 2026-08-14)
 
-- Define real criteria for `top_picks` and `gelato_guru` categories, then build the real `export_guide.sql`-driven data pipeline (replacing the hand-picked sample file).
-- Build the "All" section for real (currently a static "Coming soon").
+- **Categories are now real, curated in Airtable** (`Guide Categories` field → `restaurant_guide_categories`, see "Data" above) — `top_picks`/`gelato_guru`/`gone_but_not_forgotten` all have real tagged restaurants now (28-30 as of 2026-08-14), no criteria-definition blocker left for those three specifically. **`Desserts` is a 4th real category with no rendered section yet** — tagged restaurants exist in `guide.json` but are invisible until a Desserts section is built.
 - An About page (requested 2026-08-13, not started).
+- Build the "All" section for real (currently a static "Coming soon").
+- `Guide Comment` field (Hamish's per-restaurant blurb) doesn't exist in Airtable yet — `export_guide.sql` always selects `comment` as `NULL`. Once it exists, Hamish still needs to write the actual text for all qualifying restaurants (explicitly his to write, not Claude's).
 - Decide whether to ever commit real photos, and whether/how to handle the "avoid" red tier idea.
+- New Guide Category idea floated 2026-08-14, **not started, don't build speculatively**: "Value for money" (naming undecided — leaning "Amazing Value" as of last discussion, not finalized). Wait for Hamish to supply qualifying restaurants and confirm the name before creating the Airtable option.
 - Favicon and SEO pass — **done 2026-08-13**: favicon is 📕 (closed red book, a nod to Michelin's own "Red Guide" nickname — Hamish is undecided vs. 📖 open book, may switch later); meta description/OG/Twitter Card tags, canonical link, and a visually-hidden `<h1>` all added, mirroring Star's existing pass. Hub/Cards/Lacmane still need their own favicon + SEO work.
-- `/travel/` page removed 2026-08-13 — travel is TBD, not needed yet. "Travel guides" nav pill is now a plain unclickable `<span>`, matching "Hotels." Recreate the page (and re-link the pill) once travel content is actually ready — see the git history for the deleted stub if it's a useful starting point.
+- **Icon-per-restaurant system — data layer BUILT 2026-08-16, not yet rendered anywhere on this site.** A nullable `icon` text column now exists on `restaurants` in `hamilin-star-db`, populated by rule (`ice-cream-2` for Gelato Guru-tagged places, plus name-based overrides for the rest — `burger`/`cookie`/`grill`/`soup`/`cup`/`dumpling`/`fish`/`carrot`) in `build_import.py`. **Still to do:** `export_guide.sql` doesn't select `icon` yet, so it isn't in `data/guide.json`; once it is, still needs an actual UI treatment here (e.g. shown on the grid card or in the modal) — not designed yet. See `hamilin-star-db/CLAUDE.md` and [[project_hamilin_sites]] for the full rule list and verified counts.
+- **Guide's "No Star" dish-row modal treatment — DONE 2026-08-16.** `.dish-row.no-star` in `styles.css` (transparent background, `--hairline` border, `--ink-soft` text — Hamish's preferred "not endorsed, not another tier colour" direction) applied via a tier-check in `openModal()`'s dish-mapping in `index.html`, replacing the shared `TIER_STYLE` tint/ink lookup for this one tier. Verified live via computed-style check.
 
 ## Licence
 
