@@ -88,7 +88,7 @@
 
 <div class="guide-modal-backdrop" id="modal-backdrop">
   <div class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
-    <div class="guide-modal-photo">no photo yet</div>
+    <div class="guide-modal-photo" id="modal-photo">no photo yet</div>
     <div class="guide-modal-body">
       <button type="button" class="guide-modal-close" id="modal-close" aria-label="Close">✕</button>
       <p class="guide-modal-name" id="modal-name"></p>
@@ -125,6 +125,31 @@
     gone_but_not_forgotten: 'Gone But Not Forgotten'
   };
 
+  // Per-restaurant icon (from hamilin-star-db's rule-derived `icon` column,
+  // added 2026-08-16 — see hamilin-star-db/CLAUDE.md) — replaces the
+  // "no photo yet" placeholder wherever a restaurant has one assigned.
+  // Path data is Tabler Icons (tabler.io/icons, MIT licensed), outline set,
+  // inlined directly rather than pulling in an external font/CDN, matching
+  // the same technique already used for this site's favicon.
+  const ICON_PATHS = {
+    'ice-cream-2': ['M17.657 11a6 6 0 1 0 -11.315 0', 'M6.342 11l5.658 11l5.657 -11l-11.315 0'],
+    'burger': ['M4 15h16a4 4 0 0 1 -4 4h-8a4 4 0 0 1 -4 -4', 'M12 4c3.783 0 6.953 2.133 7.786 5h-15.572c.833 -2.867 4.003 -5 7.786 -5', 'M5 12h14'],
+    'cup': ['M5 11h14v-3h-14l0 3', 'M17.5 11l-1.5 10h-8l-1.5 -10', 'M6 8v-1a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v1', 'M15 5v-2'],
+    'dumpling': ['M5.532 5.532a2.53 2.53 0 0 1 2.56 -.623a2.532 2.532 0 0 1 4.604 -.717q .146 -.24 .356 -.45a2.532 2.532 0 0 1 4.318 1.637a2.53 2.53 0 0 1 2.844 .511l.358 .358c1.384 1.385 -.7 5.713 -4.655 9.669c-3.956 3.955 -8.284 6.04 -9.669 4.655l-.358 -.358l-.114 -.122a2.53 2.53 0 0 1 -.398 -2.724a2.532 2.532 0 0 1 -1.186 -4.675a2.532 2.532 0 0 1 .718 -4.603a2.53 2.53 0 0 1 .622 -2.558'],
+    'fish': ['M16.69 7.44a6.973 6.973 0 0 0 -1.69 4.56c0 1.747 .64 3.345 1.699 4.571', 'M2 9.504c7.715 8.647 14.75 10.265 20 2.498c-5.25 -7.761 -12.285 -6.142 -20 2.504', 'M18 11v.01', 'M11.5 10.5c-.667 1 -.667 2 0 3'],
+    'carrot': ['M3 21s9.834 -3.489 12.684 -6.34a4.487 4.487 0 0 0 0 -6.344a4.483 4.483 0 0 0 -6.342 0c-2.86 2.861 -6.347 12.689 -6.347 12.689l.005 -.005', 'M9 13l-1.5 -1.5', 'M16 14l-2 -2', 'M22 8s-1.14 -2 -3 -2c-1.406 0 -3 2 -3 2s1.14 2 3 2s3 -2 3 -2', 'M16 2s-2 1.14 -2 3s2 3 2 3s2 -1.577 2 -3c0 -1.86 -2 -3 -2 -3'],
+    'cookie': ['M8 13v.01', 'M12 17v.01', 'M12 12v.01', 'M16 14v.01', 'M11 8v.01', 'M13.148 3.476l2.667 1.104a4 4 0 0 0 4.656 6.14l.053 .132a3 3 0 0 1 0 2.296q -.745 1.18 -1.024 1.852q -.283 .684 -.66 2.216a3 3 0 0 1 -1.624 1.623q -1.572 .394 -2.216 .661q -.712 .295 -1.852 1.024a3 3 0 0 1 -2.296 0q -1.203 -.754 -1.852 -1.024q -.707 -.292 -2.216 -.66a3 3 0 0 1 -1.623 -1.624q -.397 -1.577 -.661 -2.216q -.298 -.718 -1.024 -1.852a3 3 0 0 1 0 -2.296q .719 -1.116 1.024 -1.852q .257 -.62 .66 -2.216a3 3 0 0 1 1.624 -1.623q 1.547 -.384 2.216 -.661q .687 -.285 1.852 -1.024a3 3 0 0 1 2.296 0'],
+    'grill': ['M19 8h-14a6 6 0 0 0 6 6h2a6 6 0 0 0 6 -5.775l0 -.225', 'M17 20a2 2 0 1 1 0 -4a2 2 0 0 1 0 4', 'M15 14l1 2', 'M9 14l-3 6', 'M15 18h-8', 'M15 5v-1', 'M12 5v-1', 'M9 5v-1'],
+    'soup': ['M4 11h16a1 1 0 0 1 1 1v.5c0 1.5 -2.517 5.573 -4 6.5v1a1 1 0 0 1 -1 1h-8a1 1 0 0 1 -1 -1v-1c-1.687 -1.054 -4 -5 -4 -6.5v-.5a1 1 0 0 1 1 -1', 'M12 4a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2', 'M16 4a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2', 'M8 4a2.4 2.4 0 0 0 -1 2a2.4 2.4 0 0 0 1 2']
+  };
+
+  function iconOrPlaceholder(iconName) {
+    const paths = ICON_PATHS[iconName];
+    if (!paths) return 'no photo yet';
+    const pathTags = paths.map(d => `<path d="${d}" />`).join('');
+    return `<svg class="rphoto-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${pathTags}</svg>`;
+  }
+
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
   }
@@ -153,7 +178,12 @@
 
   let data = [];
   try {
-    const res = await fetch('data/guide.json');
+    // no-store: this file gets regenerated/redeployed often (a manual
+    // Postgres export, not a versioned asset), and plain static-file
+    // servers send no Cache-Control — without this, browsers can serve
+    // a stale copy for a while after a real update. Confirmed 2026-08-16
+    // against the local dev preview server specifically.
+    const res = await fetch('data/guide.json', { cache: 'no-store' });
     data = await res.json();
   } catch (err) {
     document.querySelectorAll('.card-grid').forEach(g => {
@@ -201,7 +231,7 @@
     const status = r.restaurant_status === 'Permanently Closed'
       ? `<div class="rcard-status">Permanently Closed</div>` : '';
     return `<button type="button" class="rcard" data-name="${escapeHtml(r.name)}">
-      <div class="rcard-photo">no photo yet</div>
+      <div class="rcard-photo">${iconOrPlaceholder(r.icon)}</div>
       <div class="rcard-body">
         ${badge}
         <div class="rcard-name">${escapeHtml(r.name)}</div>
@@ -266,6 +296,7 @@
 
   const modal = {
     backdrop: document.getElementById('modal-backdrop'),
+    photo: document.getElementById('modal-photo'),
     name: document.getElementById('modal-name'),
     loc: document.getElementById('modal-loc'),
     status: document.getElementById('modal-status'),
@@ -281,6 +312,7 @@
   function openModal(name) {
     const r = data.find(x => x.name === name);
     if (!r) return;
+    modal.photo.innerHTML = iconOrPlaceholder(r.icon);
     modal.name.textContent = r.name;
     modal.loc.textContent = [r.location_name, r.city, r.country].filter(Boolean).join(', ')
       + (r.cuisine_tags && r.cuisine_tags.length ? ' · ' + r.cuisine_tags.join(', ') : '');
@@ -305,6 +337,12 @@
       modal.category.hidden = true;
     }
     modal.dishes.innerHTML = (r.dishes || []).map(d => {
+      // "No Star" reads as "not endorsed", not another tier colour — plain
+      // transparent/outline treatment (.no-star in styles.css) rather than
+      // a tinted background, per Hamish's explicit preference 2026-08-16.
+      if (d.tier === 'No Star') {
+        return `<div class="dish-row no-star">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
+      }
       const style = TIER_STYLE[d.tier] || TIER_STYLE['No Star'];
       return `<div class="dish-row" style="background:${style.tint}; color:${style.ink};">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
     }).join('');
