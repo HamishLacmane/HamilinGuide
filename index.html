@@ -75,6 +75,22 @@
   </section>
 
   <section class="guide-section">
+    <h2>Amazing Value</h2>
+    <p class="section-desc">Amazing value for money.</p>
+    <div class="card-grid" id="section-amazing_value"></div>
+  </section>
+
+  <!-- Overrated: hidden on the homepage for now, per Hamish 2026-08-18 —
+       the category, its 26 tagged restaurants, and its exclusion from the
+       All section are all still real/wired, just not shown here yet.
+       Remove `hidden` to bring it back. -->
+  <section class="guide-section" hidden>
+    <h2>Overrated</h2>
+    <p class="section-desc">self-explanatory.</p>
+    <div class="card-grid" id="section-overrated"></div>
+  </section>
+
+  <section class="guide-section">
     <h2>All</h2>
     <p class="section-desc">Every restaurant in the guide, unsorted.</p>
     <div class="card-grid" id="section-all"></div>
@@ -110,7 +126,9 @@
   const SECTIONS = [
     { key: 'top_picks', el: 'section-top_picks' },
     { key: 'gelato_guru', el: 'section-gelato_guru' },
-    { key: 'gone_but_not_forgotten', el: 'section-gone_but_not_forgotten' }
+    { key: 'gone_but_not_forgotten', el: 'section-gone_but_not_forgotten' },
+    { key: 'amazing_value', el: 'section-amazing_value' },
+    { key: 'overrated', el: 'section-overrated' }
   ];
   const TIER_ORDER = ['Gold', 'Silver', 'Bronze', 'No Star'];
   const TIER_STYLE = {
@@ -122,7 +140,9 @@
   const CATEGORY_LABEL = {
     top_picks: 'Top Picks',
     gelato_guru: "The Gelato Guru's Faves",
-    gone_but_not_forgotten: 'Gone But Not Forgotten'
+    gone_but_not_forgotten: 'Gone But Not Forgotten',
+    amazing_value: 'Amazing Value',
+    overrated: 'Overrated'
   };
 
   // Per-restaurant icon (from hamilin-star-db's rule-derived `icon` column,
@@ -225,8 +245,14 @@
 
   function cardHtml(r) {
     const dom = dominantTier(r.dishes || []);
+    // No Star, same as the modal dish-row and the Overrated badge: plain
+    // transparent/hairline/ink-soft treatment, not a solid tier colour —
+    // was still using TIER_STYLE's solid dusty-pink dot here, inconsistent
+    // with the rest of the site. Fixed 2026-08-18.
     const badge = dom
-      ? `<div class="star-badge"><span class="dot" style="background:${TIER_STYLE[dom.tier].dot}; color:${TIER_STYLE[dom.tier].dotInk};">★</span><span class="count" style="color:${TIER_STYLE[dom.tier].dotInk};">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`
+      ? (dom.tier === 'No Star'
+        ? `<div class="star-badge"><span class="dot no-star">★</span><span class="count" style="color:var(--ink-soft);">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`
+        : `<div class="star-badge"><span class="dot" style="background:${TIER_STYLE[dom.tier].dot}; color:${TIER_STYLE[dom.tier].dotInk};">★</span><span class="count" style="color:${TIER_STYLE[dom.tier].dotInk};">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`)
       : '';
     const status = r.restaurant_status === 'Permanently Closed'
       ? `<div class="rcard-status">Permanently Closed</div>` : '';
@@ -277,9 +303,14 @@
     // practice this is already every restaurant in `data`, since
     // export_guide.sql only ever includes restaurants that have one —
     // the explicit check here just makes that intent visible in code,
-    // not a real filter against anything broader).
+    // not a real filter against anything broader). Overrated restaurants
+    // are deliberately excluded here regardless of any other category
+    // they also carry (added 2026-08-18, per Hamish's explicit request) —
+    // they're places to avoid, not part of the general curated list.
     const allEl = document.getElementById('section-all');
-    const allRows = data.filter(r => (r.categories || []).length > 0 && matchesFilters(r));
+    const allRows = data.filter(r => (r.categories || []).length > 0
+      && !(r.categories || []).includes('overrated')
+      && matchesFilters(r));
     renderSection(allEl, allRows, 'all');
     document.querySelectorAll('.rcard').forEach(btn => {
       btn.addEventListener('click', () => openModal(btn.dataset.name));
