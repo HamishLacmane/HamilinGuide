@@ -292,6 +292,7 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   font-size: 0.6rem;
   line-height: 1;
 }
+.star-badge .dot.no-star { background: transparent; border: 1px solid var(--hairline); color: var(--ink-soft); }
 .star-badge .count { font-family: Consolas, monospace; font-size: 0.72rem; }
 .rcard-name { font-family: "Bahnschrift", sans-serif; font-variation-settings: "wght" 600, "wdth" 90; font-size: 0.9rem; }
 .rcard-status { font-family: Consolas, monospace; font-size: 0.68rem; color: var(--accent); margin-top: 0.2rem; }

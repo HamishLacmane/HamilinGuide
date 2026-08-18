@@ -241,8 +241,14 @@
 
   function cardHtml(r) {
     const dom = dominantTier(r.dishes || []);
+    // No Star, same as the modal dish-row and the Overrated badge: plain
+    // transparent/hairline/ink-soft treatment, not a solid tier colour —
+    // was still using TIER_STYLE's solid dusty-pink dot here, inconsistent
+    // with the rest of the site. Fixed 2026-08-18.
     const badge = dom
-      ? `<div class="star-badge"><span class="dot" style="background:${TIER_STYLE[dom.tier].dot}; color:${TIER_STYLE[dom.tier].dotInk};">★</span><span class="count" style="color:${TIER_STYLE[dom.tier].dotInk};">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`
+      ? (dom.tier === 'No Star'
+        ? `<div class="star-badge"><span class="dot no-star">★</span><span class="count" style="color:var(--ink-soft);">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`
+        : `<div class="star-badge"><span class="dot" style="background:${TIER_STYLE[dom.tier].dot}; color:${TIER_STYLE[dom.tier].dotInk};">★</span><span class="count" style="color:${TIER_STYLE[dom.tier].dotInk};">${escapeHtml(dom.tier)} ×${dom.count}</span></div>`)
       : '';
     const status = r.restaurant_status === 'Permanently Closed'
       ? `<div class="rcard-status">Permanently Closed</div>` : '';
