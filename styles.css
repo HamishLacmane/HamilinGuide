@@ -121,6 +121,20 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
 }
 .nav-star-link:hover, .nav-star-link:focus-visible { text-decoration: underline; }
 
+/* "Buy me a gelato" support link — same accent/monospace/arrow treatment
+   as .nav-star-link (the site's established "outbound action" pattern),
+   just without the border-left divider since it isn't sitting next to
+   the nav-pills. Used on the About page and next to the Gelato Guru's
+   Faves heading (added 2026-08-19, Hamish's placement choice). */
+.support-link {
+  font-family: Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  text-decoration: none;
+}
+.support-link:hover, .support-link:focus-visible { text-decoration: underline; }
+.guide-section h2 .support-link { margin-left: 0.6rem; vertical-align: middle; }
+
 /* ---------- intro text box ---------- */
 .guide-intro {
   padding: 1.1rem 0;
