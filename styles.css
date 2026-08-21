@@ -142,6 +142,10 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   font-size: 0.95rem;
   color: var(--ink);
 }
+.guide-intro p { margin: 0 0 0.6rem; }
+.guide-intro p:last-child { margin-bottom: 0; }
+.guide-intro a { color: var(--accent); text-decoration: none; }
+.guide-intro a:hover, .guide-intro a:focus-visible { text-decoration: underline; }
 
 /* ---------- filter bar ---------- */
 .guide-filters {
