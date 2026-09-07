@@ -439,6 +439,7 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
 .guide-modal-name { font-family: "Bahnschrift", sans-serif; font-variation-settings: "wght" 700, "wdth" 88; font-size: 1.15rem; margin: 0.3rem 0 0.1rem; }
 .guide-modal-loc { font-size: 0.8rem; color: var(--ink-soft); margin-bottom: 0.15rem; }
 .guide-modal-status { font-family: Consolas, monospace; font-size: 0.72rem; color: var(--accent); margin-bottom: 0.5rem; }
+.guide-modal-categories { margin-bottom: 0.75rem; display: flex; flex-wrap: wrap; gap: 0.4rem; }
 .guide-modal-category {
   display: inline-block;
   background: var(--ink);
@@ -447,7 +448,6 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   font-size: 0.68rem;
   padding: 0.25rem 0.6rem;
   border-radius: 3px;
-  margin-bottom: 0.75rem;
 }
 .guide-modal-category.cat-top_picks { background: var(--cat-top_picks); color: var(--paper); }
 .guide-modal-category.cat-gelato_guru { background: var(--cat-gelato_guru); color: var(--paper); }
@@ -462,6 +462,12 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
 .dish-row { font-size: 0.8rem; padding: 0.35rem 0.6rem; border-radius: 4px; }
 .dish-row.no-star { background: transparent; border: 1px solid var(--hairline); color: var(--ink-soft); }
 .guide-modal-comment { font-size: 0.85rem; line-height: 1.5; margin: 0 0 0.6rem; color: var(--ink); }
+.guide-modal-comment p { margin: 0 0 0.6rem; }
+.guide-modal-comment p:last-child { margin-bottom: 0; }
+.guide-modal-comment ul { margin: 0 0 0.6rem; padding-left: 1.2rem; }
+.guide-modal-comment ul:last-child { margin-bottom: 0; }
+.guide-modal-comment strong { font-weight: 700; }
+.guide-modal-comment em { font-style: italic; }
 .guide-modal-tags { display: flex; gap: 0.35rem; flex-wrap: wrap; margin-bottom: 0.6rem; }
 .guide-modal-tags span {
   font-family: Consolas, monospace;
@@ -472,6 +478,8 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
 }
 .guide-modal-maps { font-family: Consolas, monospace; font-size: 0.78rem; color: var(--accent); text-decoration: none; }
 .guide-modal-maps:hover { text-decoration: underline; }
+#modal-maps { display: inline-flex; align-items: center; gap: 0.3rem; }
+#modal-maps svg { display: block; flex-shrink: 0; }
 
 .sr-only {
   position: absolute;
