@@ -45,10 +45,28 @@
   </section>
 
   <section class="guide-filters" aria-label="Filter restaurants">
-    <select id="f-country" class="mono" aria-label="Country"><option value="">All countries</option></select>
-    <select id="f-city" class="mono" aria-label="City"><option value="">All cities</option></select>
-    <select id="f-cuisine" class="mono" aria-label="Cuisine"><option value="">All cuisines</option></select>
-    <button type="button" class="min-stars-toggle" id="min-stars-toggle">Min stars ▾</button>
+    <div class="msel" id="msel-country">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">All countries</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search countries">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+    <div class="msel" id="msel-city">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">All cities</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search cities">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+    <div class="msel" id="msel-cuisine">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">All cuisines</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search cuisines">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+    <button type="button" class="min-stars-toggle" id="min-stars-toggle">Min stars <span class="msel-btn-arrow"></span></button>
     <div class="min-stars-panel" id="min-stars-panel">
       <div class="min-stars-field"><label for="min-gold">Min gold</label><input type="number" id="min-gold" min="0" value="0"></div>
       <div class="min-stars-field"><label for="min-silver">Min silver</label><input type="number" id="min-silver" min="0" value="0"></div>
@@ -183,10 +201,74 @@
     return null;
   }
 
+  // ---- Multi-select dropdown widget (search box + checkbox list) ----
+  // Replaces the plain Country/City/Cuisine <select>s (2026-08-30,
+  // requested by Hamish, same change made to HamilinStar) — a restaurant
+  // now matches if it has ANY of the selected values in a given field,
+  // and all filled-in fields are AND'd together, same convention as the
+  // min-star fields already use.
+  const MULTISELECT_REGISTRY = [];
+  function createMultiSelect(root, { options, allLabel, search = true, onChange }) {
+    const btn = root.querySelector('.msel-btn');
+    const panel = root.querySelector('.msel-panel');
+    const btnLabel = root.querySelector('.msel-btn-label');
+    const searchEl = root.querySelector('.msel-search');
+    const optionsEl = root.querySelector('.msel-options');
+    let allOptions = options; // [{value,label}]
+    const selected = new Set();
+
+    function renderOptions(filterText) {
+      const q = (filterText || '').toLowerCase();
+      const shown = q ? allOptions.filter(o => o.label.toLowerCase().includes(q)) : allOptions;
+      optionsEl.innerHTML = shown.length ? shown.map(o => `
+        <label class="msel-option">
+          <input type="checkbox" value="${escapeHtml(o.value)}" ${selected.has(o.value) ? 'checked' : ''}>
+          <span>${escapeHtml(o.label)}</span>
+        </label>`).join('') : `<p class="msel-empty">No matches</p>`;
+    }
+
+    function updateLabel() {
+      if (selected.size === 0) btnLabel.textContent = allLabel;
+      else if (selected.size === 1) btnLabel.textContent = allOptions.find(o => o.value === [...selected][0])?.label || [...selected][0];
+      else btnLabel.textContent = `${selected.size} selected`;
+      btn.classList.toggle('msel-active', selected.size > 0);
+    }
+
+    function close() {
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function open() {
+      MULTISELECT_REGISTRY.forEach(m => { if (m !== api) m.close(); });
+      panel.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      if (searchEl) { searchEl.value = ''; searchEl.focus(); }
+      renderOptions('');
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.hidden ? open() : close();
+    });
+    if (searchEl) searchEl.addEventListener('input', () => renderOptions(searchEl.value));
+    optionsEl.addEventListener('change', (e) => {
+      if (!e.target.matches('input[type="checkbox"]')) return;
+      const v = e.target.value;
+      if (e.target.checked) selected.add(v); else selected.delete(v);
+      updateLabel();
+      onChange([...selected]);
+    });
+    document.addEventListener('click', (e) => { if (!root.contains(e.target)) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+    updateLabel();
+    renderOptions('');
+    const api = { getSelected: () => [...selected], close };
+    MULTISELECT_REGISTRY.push(api);
+    return api;
+  }
+
   const els = {
-    country: document.getElementById('f-country'),
-    city: document.getElementById('f-city'),
-    cuisine: document.getElementById('f-cuisine'),
     minGold: document.getElementById('min-gold'),
     minSilver: document.getElementById('min-silver'),
     minBronze: document.getElementById('min-bronze'),
@@ -213,17 +295,19 @@
     return;
   }
 
-  function populateSelect(el, values) {
-    for (const v of values) {
-      const opt = document.createElement('option');
-      opt.value = v;
-      opt.textContent = v;
-      el.appendChild(opt);
-    }
-  }
-  populateSelect(els.country, [...new Set(data.map(r => r.country).filter(Boolean))].sort());
-  populateSelect(els.city, [...new Set(data.map(r => r.city).filter(Boolean))].sort());
-  populateSelect(els.cuisine, [...new Set(data.flatMap(r => r.cuisine_tags || []))].sort());
+  const asOptions = values => values.map(v => ({ value: v, label: v }));
+  els.country = createMultiSelect(document.getElementById('msel-country'), {
+    options: asOptions([...new Set(data.map(r => r.country).filter(Boolean))].sort()),
+    allLabel: 'All countries', onChange: () => render()
+  });
+  els.city = createMultiSelect(document.getElementById('msel-city'), {
+    options: asOptions([...new Set(data.map(r => r.city).filter(Boolean))].sort()),
+    allLabel: 'All cities', onChange: () => render()
+  });
+  els.cuisine = createMultiSelect(document.getElementById('msel-cuisine'), {
+    options: asOptions([...new Set(data.flatMap(r => r.cuisine_tags || []))].sort()),
+    allLabel: 'All cuisines', onChange: () => render()
+  });
 
   function tierCounts(dishes) {
     const c = { Gold: 0, Silver: 0, Bronze: 0 };
@@ -233,9 +317,12 @@
   }
 
   function matchesFilters(r) {
-    if (els.country.value && r.country !== els.country.value) return false;
-    if (els.city.value && r.city !== els.city.value) return false;
-    if (els.cuisine.value && !(r.cuisine_tags || []).includes(els.cuisine.value)) return false;
+    const countries = els.country.getSelected();
+    const cities = els.city.getSelected();
+    const cuisines = els.cuisine.getSelected();
+    if (countries.length && !countries.includes(r.country)) return false;
+    if (cities.length && !cities.includes(r.city)) return false;
+    if (cuisines.length && !cuisines.some(c => (r.cuisine_tags || []).includes(c))) return false;
     const c = tierCounts(r.dishes || []);
     if (c.Gold < (+els.minGold.value || 0)) return false;
     if (c.Silver < (+els.minSilver.value || 0)) return false;
@@ -321,7 +408,7 @@
     });
   }
 
-  for (const el of [els.country, els.city, els.cuisine, els.minGold, els.minSilver, els.minBronze, els.minTotal]) {
+  for (const el of [els.minGold, els.minSilver, els.minBronze, els.minTotal]) {
     el.addEventListener('input', render);
     el.addEventListener('change', render);
   }
