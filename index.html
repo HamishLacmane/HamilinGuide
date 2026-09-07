@@ -129,11 +129,11 @@
       <p class="guide-modal-name" id="modal-name"></p>
       <p class="guide-modal-loc" id="modal-loc"></p>
       <p class="guide-modal-status" id="modal-status" hidden></p>
-      <span class="guide-modal-category" id="modal-category" hidden></span>
+      <div class="guide-modal-categories" id="modal-category" hidden></div>
+      <div class="guide-modal-comment" id="modal-comment"></div>
       <div class="dish-list" id="modal-dishes"></div>
-      <p class="guide-modal-comment" id="modal-comment"></p>
       <div class="guide-modal-tags" id="modal-tags"></div>
-      <a class="guide-modal-maps" id="modal-maps" href="#" target="_blank" rel="noopener" hidden>View on Google Maps ↗</a>
+      <a class="guide-modal-maps" id="modal-maps" href="#" target="_blank" rel="noopener" hidden><svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" /><path d="M12.02 21.485a1.996 1.996 0 0 1 -1.433 -.585l-4.244 -4.243a8 8 0 1 1 13.403 -3.651" /><path d="M16 22l5 -5" /><path d="M21 21.5v-4.5h-4.5" /></svg> View on Google Maps ↗</a>
       <p class="guide-modal-maps" id="modal-maps-none" style="color: var(--ink-muted);" hidden>No map link yet</p>
       <a class="guide-modal-maps" id="modal-star-link" href="#" target="_blank" rel="noopener" style="display: block; margin-top: 0.35rem;">See all ratings for this restaurant on Hamilin Star ↗</a>
     </div>
@@ -191,6 +191,42 @@
 
   function escapeHtml(s) {
     return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  // Markdown-lite for Hamish's per-restaurant "Guide Comment" (added
+  // 2026-08-30) — deliberately a small hand-rolled subset, not a real
+  // Markdown library (matches the site's zero-dependency approach): blank
+  // line = new paragraph, single newline = line break within one, "- "
+  // lines = a bullet list, **bold**, *italic*/_italic_. Escapes first,
+  // then only ever re-introduces the exact tags below - safe against
+  // anything Hamish types.
+  function inlineMarkdown(s) {
+    return s
+      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+      .replace(/(?:^|(?<=\s))\*(\S(?:.*?\S)?)\*(?=\s|$)/g, '<em>$1</em>')
+      .replace(/_(.+?)_/g, '<em>$1</em>');
+  }
+  function renderCommentMarkdown(raw) {
+    if (!raw) return '';
+    const blocks = escapeHtml(raw).split(/\n\s*\n/);
+    return blocks.map(block => {
+      const lines = block.split('\n').filter(l => l.length);
+      // A block can mix a leading line or two of plain text with a list
+      // right underneath, no blank line needed in between (e.g. "Try
+      // this:\n- one\n- two") - group into runs rather than requiring
+      // the whole block to be one or the other.
+      let html = '', para = [], items = [];
+      const flushPara = () => { if (para.length) { html += `<p>${para.map(inlineMarkdown).join('<br>')}</p>`; para = []; } };
+      const flushList = () => { if (items.length) { html += `<ul>${items.map(i => `<li>${inlineMarkdown(i)}</li>`).join('')}</ul>`; items = []; } };
+      for (const line of lines) {
+        const m = line.match(/^\s*-\s+(.*)$/);
+        if (m) { flushPara(); items.push(m[1]); }
+        else { flushList(); para.push(line); }
+      }
+      flushPara();
+      flushList();
+      return html;
+    }).join('');
   }
 
   function dominantTier(dishes) {
@@ -331,7 +367,7 @@
     return true;
   }
 
-  function cardHtml(r) {
+  function cardHtml(r, sectionKey) {
     const dom = dominantTier(r.dishes || []);
     // No Star, same as the modal dish-row and the Overrated badge: plain
     // transparent/hairline/ink-soft treatment, not a solid tier colour —
@@ -344,7 +380,7 @@
       : '';
     const status = r.restaurant_status === 'Permanently Closed'
       ? `<div class="rcard-status">Permanently Closed</div>` : '';
-    return `<button type="button" class="rcard" data-name="${escapeHtml(r.name)}">
+    return `<button type="button" class="rcard" data-name="${escapeHtml(r.name)}" data-section="${escapeHtml(sectionKey)}">
       <div class="rcard-photo">${iconOrPlaceholder(r.icon)}</div>
       <div class="rcard-body">
         ${badge}
@@ -373,7 +409,7 @@
     }
     const isExpanded = expandedSections.has(key);
     const shown = isExpanded ? rows : rows.slice(0, CARD_LIMIT);
-    let html = shown.map(cardHtml).join('');
+    let html = shown.map(r => cardHtml(r, key)).join('');
     if (rows.length > CARD_LIMIT) {
       const label = isExpanded ? 'Show fewer' : `Show all ${rows.length} ↓`;
       html += `<button type="button" class="section-toggle" data-section="${key}">${label}</button>`;
@@ -401,7 +437,7 @@
       && matchesFilters(r));
     renderSection(allEl, allRows, 'all');
     document.querySelectorAll('.rcard').forEach(btn => {
-      btn.addEventListener('click', () => openModal(btn.dataset.name));
+      btn.addEventListener('click', () => openModal(btn.dataset.name, btn.dataset.section));
     });
     document.querySelectorAll('.section-toggle').forEach(btn => {
       btn.addEventListener('click', () => toggleSection(btn.dataset.section));
@@ -428,29 +464,35 @@
     starLink: document.getElementById('modal-star-link')
   };
 
-  function openModal(name) {
+  function openModal(name, sectionKey) {
     const r = data.find(x => x.name === name);
     if (!r) return;
     modal.photo.innerHTML = iconOrPlaceholder(r.icon);
     modal.name.textContent = r.name;
-    modal.loc.textContent = [r.location_name, r.city, r.country].filter(Boolean).join(', ')
-      + (r.cuisine_tags && r.cuisine_tags.length ? ' · ' + r.cuisine_tags.join(', ') : '');
+    // Cuisine tags dropped from this line 2026-08-30, per Hamish - they're
+    // already shown as their own chips further down (modal.tags), showing
+    // both was redundant.
+    modal.loc.textContent = [r.location_name, r.city, r.country].filter(Boolean).join(', ');
     if (r.restaurant_status === 'Permanently Closed') {
       modal.status.textContent = 'Permanently closed';
       modal.status.hidden = false;
     } else {
       modal.status.hidden = true;
     }
-    // Prefer a category the site actually renders a section/badge for.
-    // "desserts" (added 2026-08-14) has no section built yet, so a
-    // restaurant tagged only Desserts + a real section (e.g. Gelato Guru)
-    // must not have its badge silently swallowed just because "desserts"
-    // sorts first alphabetically in the array.
-    const cat = (r.categories || []).find(c => CATEGORY_LABEL[c]);
-    modal.category.className = 'guide-modal-category';
-    if (cat && CATEGORY_LABEL[cat]) {
-      modal.category.textContent = CATEGORY_LABEL[cat];
-      modal.category.classList.add(`cat-${cat}`);
+    // Show every category the restaurant actually carries (2026-08-30,
+    // requested after the single-badge version below was fixed to at
+    // least pick the right one but still hid the rest) - whichever
+    // section's card was clicked goes first, the others follow. "desserts"
+    // (added 2026-08-14) still has no section built, so it's excluded here
+    // same as before rather than showing a badge with no matching section.
+    const cats = (r.categories || []).filter(c => CATEGORY_LABEL[c]);
+    const ordered = (sectionKey && cats.includes(sectionKey))
+      ? [sectionKey, ...cats.filter(c => c !== sectionKey)]
+      : cats;
+    if (ordered.length) {
+      modal.category.innerHTML = ordered.map(c =>
+        `<span class="guide-modal-category cat-${c}">${escapeHtml(CATEGORY_LABEL[c])}</span>`
+      ).join('');
       modal.category.hidden = false;
     } else {
       modal.category.hidden = true;
@@ -465,12 +507,13 @@
       const style = TIER_STYLE[d.tier] || TIER_STYLE['No Star'];
       return `<div class="dish-row" style="background:${style.tint}; color:${style.ink};">${escapeHtml(d.tier)} — ${escapeHtml(d.name)}</div>`;
     }).join('');
-    // No real "Guide Comment" data source yet (2026-08-14) — r.comment is
-    // always null until that field is built; keep showing the literal
-    // placeholder per the site's "content is placeholder" rule.
+    // Real "Guide Comment" data since 2026-08-30 (hamilin-star-db's
+    // guide_comments.sql) — rendered through the markdown-lite parser
+    // above. Restaurants with none yet keep the literal placeholder, per
+    // the site's "content is placeholder" rule.
     modal.comment.innerHTML = r.comment
-      ? escapeHtml(r.comment)
-      : '<!-- TODO(Hamish): your comment about this place --> placeholder text';
+      ? renderCommentMarkdown(r.comment)
+      : '<p><!-- TODO(Hamish): your comment about this place --> placeholder text</p>';
     modal.tags.innerHTML = (r.cuisine_tags && r.cuisine_tags.length)
       ? r.cuisine_tags.map(t => `<span>${escapeHtml(t)}</span>`).join('')
       : '<span><!-- TODO --> placeholder tag</span>';
