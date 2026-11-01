@@ -27,3 +27,4 @@ _Entries up to 2026-10-10 were backfilled from memory notes and CLAUDE.md histor
 - 2026-10-25 — [change] Import agent prompt updated (usual-orders shorthand); copy kept identical with the other repo and the working copy. Not yet committed.
 - 2026-10-25 — [change] Agent prompts + AGENTS.md updated: temp files only inside the current project folder (Hamish's rule). Copies kept identical. Not yet committed.
 - 2026-10-25 — [change] Re-exported data/guide.json (70 restaurants, was 69; Pane Cunzato now has a Guide category) after the 14-24 Oct 2026 visits batch. Not yet committed.
+- 2026-11-01 — [change] Re-ran guide export after the Nando's Cabot Place visits (28 and 29 Oct 2026, 4 reconfirmed dishes); guide.json 70 records, output byte-identical to the committed data (no exported field changed). Not yet committed.
