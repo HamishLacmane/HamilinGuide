@@ -78,3 +78,11 @@ No LICENSE file by design — all rights reserved by default. Don't add an open-
 ## Git workflow
 
 `gh` CLI is not installed on this machine — PRs can't be created programmatically. Push the feature branch and hand Hamish the GitHub "create PR" URL GitHub prints on push. After Hamish merges, check whether the branch still exists on origin before reusing it — he periodically deletes merged branches via the GitHub UI.
+
+## Project log
+
+`PROJECT_LOG.md` in this folder is an **append-only** record of key changes and things Hamish has requested (format: `- YYYY-MM-DD — [change|request|decision|bug|todo] text`, newest at the bottom).
+
+**It MUST stay append-only. Hamish's explicit, standing rule:** only ever add new lines at the bottom (e.g. `>>`). Never rewrite, reorder, reflow, summarise, de-duplicate, "tidy" or delete existing lines — not even to fix a typo or a wrong fact; add a new line that says what was wrong instead. When rewriting the file with a whole-file edit would be easier, don't: append.
+
+Add a line after any key change or request, in the repo the change lives in (data batches go in `hamilin-star-db/PROJECT_LOG.md`). **No `Co-Authored-By: Claude` trailer on commits here** — Hamish's standing rule.
