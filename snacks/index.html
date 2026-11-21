@@ -1,0 +1,449 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Snacks — Hamilin Guide</title>
+<meta name="description" content="Hamilin's personal guide to snacks: crisps, chocolate, biscuits and more, rated and sorted.">
+<link rel="canonical" href="https://hamilinguide.com/snacks/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Hamilin Guide">
+<meta property="og:title" content="Snacks — Hamilin Guide">
+<meta property="og:description" content="Hamilin's personal guide to snacks: crisps, chocolate, biscuits and more, rated and sorted.">
+<meta property="og:url" content="https://hamilinguide.com/snacks/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Snacks — Hamilin Guide">
+<meta name="twitter:description" content="Hamilin's personal guide to snacks: crisps, chocolate, biscuits and more, rated and sorted.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%93%95</text></svg>">
+<link rel="stylesheet" href="../styles.css">
+</head>
+<body>
+<div class="page">
+
+  <h1 class="sr-only">Hamilin Guide — snacks</h1>
+
+  <header class="topbar">
+    <div class="topbar-brand">
+      <div class="wordmark display"><a href="/">Hamilin <span class="accent">Guide</span></a></div>
+      <nav class="crumbs">
+        <a class="hub-link" href="https://hamilin.com">Hub</a>
+      </nav>
+    </div>
+    <div class="nav-pills">
+      <a class="nav-pill" href="/">Restaurants</a>
+      <span class="nav-pill active">Snacks</span>
+      <span class="nav-pill soon">Hotels · coming soon</span>
+      <span class="nav-pill soon">Travel guides · coming soon</span>
+      <a class="nav-star-link" href="https://hamilinstar.com/snacks.html" target="_blank" rel="noopener">See every snack rating on Hamilin Star ↗</a>
+    </div>
+  </header>
+
+  <section class="guide-intro">
+    <p><!-- TODO(Hamish): intro for the snacks guide --> placeholder text</p>
+  </section>
+
+  <section class="guide-filters" aria-label="Filter snacks">
+    <div class="msel" id="msel-type">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">All types</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search types">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+    <div class="msel" id="msel-country">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">All countries</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search countries">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+    <div class="msel" id="msel-dietary">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">Any dietary</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search dietary tags">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+    <div class="msel" id="msel-shop">
+      <button type="button" class="msel-btn mono" aria-haspopup="true" aria-expanded="false"><span class="msel-btn-label">Any shop</span><span class="msel-btn-arrow"></span></button>
+      <div class="msel-panel" hidden>
+        <input type="text" class="msel-search mono" placeholder="Search…" aria-label="Search shops">
+        <div class="msel-options"></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Top Picks <span style="color: var(--ink-muted); font-size: 0.9rem;">(Recommended)</span></h2>
+    <p class="section-desc"><!-- TODO(Hamish): description for Top Picks (snacks) --> placeholder text</p>
+    <div class="card-grid" id="section-top_picks"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Worth a Try</h2>
+    <p class="section-desc"><!-- TODO(Hamish): description for Worth a Try --> placeholder text</p>
+    <div class="card-grid" id="section-worth_a_try"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Gone But Not Forgotten <span style="color: var(--ink-muted); font-size: 0.9rem;">(Discontinued)</span></h2>
+    <p class="section-desc">Legends that deserve their roses.</p>
+    <div class="card-grid" id="section-gone_but_not_forgotten"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Amazing Value</h2>
+    <p class="section-desc">Amazing value for money.</p>
+    <div class="card-grid" id="section-amazing_value"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>All</h2>
+    <p class="section-desc"><!-- TODO(Hamish): description for All (snacks) --> placeholder text</p>
+    <div class="card-grid" id="section-all"></div>
+  </section>
+
+  <footer>
+    <p class="mono"><a href="/about/">About</a> · © 2026 Hamish Lacmane. All rights reserved.</p>
+  </footer>
+
+</div>
+
+<div class="guide-modal-backdrop" id="modal-backdrop">
+  <div class="guide-modal" role="dialog" aria-modal="true" aria-labelledby="modal-name">
+    <div class="guide-modal-photo" id="modal-photo">no photo yet</div>
+    <div class="guide-modal-body">
+      <button type="button" class="guide-modal-close" id="modal-close" aria-label="Close">✕</button>
+      <p class="guide-modal-name" id="modal-name"></p>
+      <p class="guide-modal-loc" id="modal-loc"></p>
+      <p class="guide-modal-status" id="modal-status" hidden></p>
+      <div class="guide-modal-categories" id="modal-category" hidden></div>
+      <div class="guide-modal-comment" id="modal-comment"></div>
+      <div class="dish-list" id="modal-tier"></div>
+      <dl class="snack-details" id="modal-details"></dl>
+      <div class="guide-modal-tags" id="modal-tags"></div>
+      <p class="snack-diet-note mono" id="modal-diet-note" hidden>Dietary tags are as labelled on the pack when tried. Recipes change and differ by country, so check the pack and don't rely on this for allergies.</p>
+      <a class="guide-modal-maps" id="modal-star-link" href="#" target="_blank" rel="noopener" style="display: block; margin-top: 0.35rem;">See this snack on Hamilin Star ↗</a>
+    </div>
+  </div>
+</div>
+
+<script>
+(async function () {
+  const SECTIONS = [
+    { key: 'top_picks', el: 'section-top_picks' },
+    { key: 'worth_a_try', el: 'section-worth_a_try' },
+    { key: 'gone_but_not_forgotten', el: 'section-gone_but_not_forgotten' },
+    { key: 'amazing_value', el: 'section-amazing_value' }
+  ];
+  const TIER_ORDER = ['Gold', 'Silver', 'Bronze', 'No Star'];
+  const TIER_STYLE = {
+    'Gold': { dot: 'var(--gold-bg)', dotInk: 'var(--gold-ink)', tint: 'var(--gold-tint)', ink: 'var(--gold-ink)' },
+    'Silver': { dot: 'var(--silver-bg)', dotInk: 'var(--silver-ink)', tint: 'var(--silver-tint)', ink: 'var(--silver-ink)' },
+    'Bronze': { dot: 'var(--bronze-bg)', dotInk: 'var(--bronze-ink)', tint: 'var(--bronze-tint)', ink: 'var(--bronze-ink)' },
+    'No Star': { dot: 'var(--nostar-bg)', dotInk: 'var(--nostar-ink)', tint: 'var(--nostar-tint)', ink: 'var(--nostar-ink)' }
+  };
+  const CATEGORY_LABEL = {
+    top_picks: 'Top Picks',
+    worth_a_try: 'Worth a Try',
+    gelato_guru: "The Gelato Guru's Faves",
+    gone_but_not_forgotten: 'Gone But Not Forgotten',
+    amazing_value: 'Amazing Value',
+    overrated: 'Overrated'
+  };
+  const CURRENCY = { GBP: '£', EUR: '€', USD: '$', JPY: '¥' };
+
+  // Icon per snack Type (Tabler Icons v3.44.0, MIT, outline set, inlined like the restaurant icons).
+  // Chocolate/Sweets/Biscuits/Crisps picked by Hamish 2026-11-21; Bars and Nuts are still first-pass placeholders.
+  const TYPE_ICON = {
+    'Chocolate': 'chocolate',
+    'Sweets and candy': 'candy',
+    'Crisps and savoury': 'paper-bag', // stopgap: Tabler has no crisps icon; todo to find a better one
+    'Biscuits': 'cookie',
+    'Bars': 'bread',
+    'Nuts and popcorn': 'nut'
+  };
+  const ICON_PATHS = {
+    'chocolate': ["M12 21v-16", "M6 15h12", "M6 9h10.5", "M10.05 3a2.5 2.5 0 0 0 3.987 1.47a3 3 0 0 0 2.047 2.387a2.504 2.504 0 0 0 1.916 3.093v9.05a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h2.05"],
+    'paper-bag': ["M8 3h8a2 2 0 0 1 2 2v1.82a5 5 0 0 0 .528 2.236l.944 1.888a5 5 0 0 1 .528 2.236v5.82a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-5.82a5 5 0 0 1 .528 -2.236l1.472 -2.944v-3a2 2 0 0 1 2 -2", "M12 15a2 2 0 1 0 4 0a2 2 0 1 0 -4 0", "M6 21a2 2 0 0 0 2 -2v-5.82a5 5 0 0 0 -.528 -2.236l-1.472 -2.944", "M11 7h2"],
+    'candy': ["M7.05 11.293l4.243 -4.243a2 2 0 0 1 2.828 0l2.829 2.83a2 2 0 0 1 0 2.828l-4.243 4.243a2 2 0 0 1 -2.828 0l-2.829 -2.831a2 2 0 0 1 0 -2.828", "M16.243 9.172l3.086 -.772a1.5 1.5 0 0 0 .697 -2.516l-2.216 -2.217a1.5 1.5 0 0 0 -2.44 .47l-1.248 2.913", "M9.172 16.243l-.772 3.086a1.5 1.5 0 0 1 -2.516 .697l-2.217 -2.216a1.5 1.5 0 0 1 .47 -2.44l2.913 -1.248"],
+    'cookie': ["M8 13v.01", "M12 17v.01", "M12 12v.01", "M16 14v.01", "M11 8v.01", "M13.148 3.476l2.667 1.104a4 4 0 0 0 4.656 6.14l.053 .132a3 3 0 0 1 0 2.296q -.745 1.18 -1.024 1.852q -.283 .684 -.66 2.216a3 3 0 0 1 -1.624 1.623q -1.572 .394 -2.216 .661q -.712 .295 -1.852 1.024a3 3 0 0 1 -2.296 0q -1.203 -.754 -1.852 -1.024q -.707 -.292 -2.216 -.66a3 3 0 0 1 -1.623 -1.624q -.397 -1.577 -.661 -2.216q -.298 -.718 -1.024 -1.852a3 3 0 0 1 0 -2.296q .719 -1.116 1.024 -1.852q .257 -.62 .66 -2.216a3 3 0 0 1 1.624 -1.623q 1.547 -.384 2.216 -.661q .687 -.285 1.852 -1.024a3 3 0 0 1 2.296 0"],
+    'bread': ["M18 4a3 3 0 0 1 2 5.235v8.765a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-8.764a3 3 0 0 1 1.824 -5.231h12.176v-.005"],
+    'nut': ["M19 6.84a2.007 2.007 0 0 1 1 1.754v6.555c0 .728 -.394 1.4 -1.03 1.753l-6 3.844a1.995 1.995 0 0 1 -1.94 0l-6 -3.844a2.006 2.006 0 0 1 -1.03 -1.752v-6.557c0 -.728 .394 -1.399 1.03 -1.753l6 -3.582a2.049 2.049 0 0 1 2 0l6 3.582h-.03", "M9 12a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"]
+  };
+
+  function iconOrPlaceholder(type) {
+    const paths = ICON_PATHS[TYPE_ICON[type]];
+    if (!paths) return 'no photo yet';
+    const pathTags = paths.map(d => `<path d="${d}" />`).join('');
+    return `<svg class="rphoto-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${pathTags}</svg>`;
+  }
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  }
+
+  function money(amount, currency) {
+    if (amount === null || amount === undefined) return null;
+    const n = Number(amount);
+    const sym = CURRENCY[currency];
+    if (currency === 'GBP' && n < 1) return `${Math.round(n * 100)}p`;
+    const text = n.toFixed(currency === 'JPY' ? 0 : 2);
+    return sym ? `${sym}${text}` : `${text} ${currency || ''}`.trim();
+  }
+  function per100(r) {
+    if (r.price_per_100 === null || r.price_per_100 === undefined) return null;
+    const n = Number(r.price_per_100);
+    if (r.currency === 'GBP' && n < 1) return `${(n * 100).toFixed(1).replace(/\.0$/, '')}p`;
+    const sym = CURRENCY[r.currency];
+    return `${sym ? sym : ''}${n.toFixed(r.currency === 'JPY' ? 0 : 2)}${sym ? '' : ' ' + (r.currency || '')}`;
+  }
+  function snackName(r) { return `${r.brand} ${r.product}`; }
+  function snackKey(r) { return [r.brand, r.product, r.flavour || '', r.country, r.edition_note || ''].join('|'); }
+  function hasDietary(r, tag) {
+    if ((r.dietary || []).includes(tag)) return true;
+    return tag === 'Vegetarian' && (r.dietary || []).includes('Vegan'); // Vegan counts as Vegetarian
+  }
+
+  // ---- Multi-select dropdown widget (same as the restaurant page) ----
+  const MULTISELECT_REGISTRY = [];
+  function createMultiSelect(root, { options, allLabel, search = true, onChange }) {
+    const btn = root.querySelector('.msel-btn');
+    const panel = root.querySelector('.msel-panel');
+    const btnLabel = root.querySelector('.msel-btn-label');
+    const searchEl = root.querySelector('.msel-search');
+    const optionsEl = root.querySelector('.msel-options');
+    let allOptions = options; // [{value,label}]
+    const selected = new Set();
+
+    function renderOptions(filterText) {
+      const q = (filterText || '').toLowerCase();
+      const shown = q ? allOptions.filter(o => o.label.toLowerCase().includes(q)) : allOptions;
+      optionsEl.innerHTML = shown.length ? shown.map(o => `
+        <label class="msel-option">
+          <input type="checkbox" value="${escapeHtml(o.value)}" ${selected.has(o.value) ? 'checked' : ''}>
+          <span>${escapeHtml(o.label)}</span>
+        </label>`).join('') : `<p class="msel-empty">No matches</p>`;
+    }
+
+    function updateLabel() {
+      if (selected.size === 0) btnLabel.textContent = allLabel;
+      else if (selected.size === 1) btnLabel.textContent = allOptions.find(o => o.value === [...selected][0])?.label || [...selected][0];
+      else btnLabel.textContent = `${selected.size} selected`;
+      btn.classList.toggle('msel-active', selected.size > 0);
+    }
+
+    function close() {
+      panel.hidden = true;
+      btn.setAttribute('aria-expanded', 'false');
+    }
+    function open() {
+      MULTISELECT_REGISTRY.forEach(m => { if (m !== api) m.close(); });
+      panel.hidden = false;
+      btn.setAttribute('aria-expanded', 'true');
+      if (searchEl) { searchEl.value = ''; searchEl.focus(); }
+      renderOptions('');
+    }
+
+    btn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      panel.hidden ? open() : close();
+    });
+    if (searchEl) searchEl.addEventListener('input', () => renderOptions(searchEl.value));
+    optionsEl.addEventListener('change', (e) => {
+      if (!e.target.matches('input[type="checkbox"]')) return;
+      const v = e.target.value;
+      if (e.target.checked) selected.add(v); else selected.delete(v);
+      updateLabel();
+      onChange([...selected]);
+    });
+    document.addEventListener('click', (e) => { if (!root.contains(e.target)) close(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+
+    updateLabel();
+    renderOptions('');
+    const api = { getSelected: () => [...selected], close };
+    MULTISELECT_REGISTRY.push(api);
+    return api;
+  }
+
+  let data = [];
+  try {
+    const res = await fetch('../data/snacks.json', { cache: 'no-store' });
+    data = await res.json();
+  } catch (err) {
+    document.querySelectorAll('.card-grid').forEach(g => {
+      g.outerHTML = `<p class="section-empty">Couldn't load snack data (${escapeHtml(err.message)}).</p>`;
+    });
+    return;
+  }
+
+  const els = {};
+  const asOptions = values => values.map(v => ({ value: v, label: v }));
+  els.type = createMultiSelect(document.getElementById('msel-type'), {
+    options: asOptions([...new Set(data.map(r => r.type).filter(Boolean))].sort()),
+    allLabel: 'All types', onChange: () => render()
+  });
+  els.country = createMultiSelect(document.getElementById('msel-country'), {
+    options: asOptions([...new Set(data.map(r => r.country).filter(Boolean))].sort()),
+    allLabel: 'All countries', onChange: () => render()
+  });
+  els.dietary = createMultiSelect(document.getElementById('msel-dietary'), {
+    options: asOptions([...new Set(data.flatMap(r => r.dietary || []))].sort()),
+    allLabel: 'Any dietary', onChange: () => render()
+  });
+  els.shop = createMultiSelect(document.getElementById('msel-shop'), {
+    options: asOptions([...new Set(data.flatMap(r => r.retailers || []))].filter(s => s !== 'Most shops').sort()),
+    allLabel: 'Any shop', onChange: () => render()
+  });
+
+  function matchesFilters(r) {
+    const types = els.type.getSelected(), countries = els.country.getSelected();
+    const dietary = els.dietary.getSelected(), shops = els.shop.getSelected();
+    if (types.length && !types.includes(r.type)) return false;
+    if (countries.length && !countries.includes(r.country)) return false;
+    if (dietary.length && !dietary.some(t => hasDietary(r, t))) return false;
+    if (shops.length && !shops.some(s => (r.retailers || []).includes(s) || (r.retailers || []).includes('Most shops'))) return false;
+    return true;
+  }
+
+  const tierRank = r => { const i = TIER_ORDER.indexOf(r.tier); return i === -1 ? TIER_ORDER.length : i; };
+  const bySnack = (a, b) => tierRank(a) - tierRank(b) || snackName(a).localeCompare(snackName(b)) || (a.flavour || '').localeCompare(b.flavour || '');
+
+  function cardHtml(r, sectionKey) {
+    const style = TIER_STYLE[r.tier];
+    const badge = r.tier
+      ? (r.tier === 'No Star'
+        ? `<div class="star-badge"><span class="dot no-star">★</span><span class="count" style="color:var(--ink-soft);">${escapeHtml(r.tier)}</span></div>`
+        : `<div class="star-badge"><span class="dot" style="background:${style.dot}; color:${style.dotInk};">★</span><span class="count" style="color:${style.dotInk};">${escapeHtml(r.tier)}</span></div>`)
+      : '';
+    const status = r.discontinued ? `<div class="rcard-status">Discontinued</div>` : '';
+    const sub = r.flavour ? `<div class="rcard-sub">${escapeHtml(r.flavour)}</div>` : '';
+    return `<button type="button" class="rcard" data-key="${escapeHtml(snackKey(r))}" data-section="${escapeHtml(sectionKey)}">
+      <div class="rcard-photo">${iconOrPlaceholder(r.type)}</div>
+      <div class="rcard-body">
+        ${badge}
+        <div class="rcard-name">${escapeHtml(snackName(r))}</div>
+        ${sub}
+        ${status}
+      </div>
+    </button>`;
+  }
+
+  const CARD_LIMIT = 5;
+  const expandedSections = new Set();
+  function toggleSection(key) {
+    if (expandedSections.has(key)) expandedSections.delete(key);
+    else expandedSections.add(key);
+    render();
+  }
+  function renderSection(el, rows, key) {
+    if (!rows.length) {
+      el.innerHTML = `<p class="section-empty">Nothing here yet</p>`;
+      return;
+    }
+    const isExpanded = expandedSections.has(key);
+    const shown = isExpanded ? rows : rows.slice(0, CARD_LIMIT);
+    let html = shown.map(r => cardHtml(r, key)).join('');
+    if (rows.length > CARD_LIMIT) {
+      const label = isExpanded ? 'Show fewer' : `Show all ${rows.length} ↓`;
+      html += `<button type="button" class="section-toggle" data-section="${key}">${label}</button>`;
+    }
+    el.innerHTML = html;
+  }
+
+  function render() {
+    for (const s of SECTIONS) {
+      const rows = data.filter(r => (r.categories || []).includes(s.key) && matchesFilters(r)).sort(bySnack);
+      renderSection(document.getElementById(s.el), rows, s.key);
+    }
+    const allRows = data.filter(r => (r.categories || []).length > 0
+      && !(r.categories || []).includes('overrated')
+      && matchesFilters(r)).sort(bySnack);
+    renderSection(document.getElementById('section-all'), allRows, 'all');
+    document.querySelectorAll('.rcard').forEach(btn => {
+      btn.addEventListener('click', () => openModal(btn.dataset.key, btn.dataset.section));
+    });
+    document.querySelectorAll('.section-toggle').forEach(btn => {
+      btn.addEventListener('click', () => toggleSection(btn.dataset.section));
+    });
+  }
+
+  const modal = {
+    backdrop: document.getElementById('modal-backdrop'),
+    photo: document.getElementById('modal-photo'),
+    name: document.getElementById('modal-name'),
+    loc: document.getElementById('modal-loc'),
+    status: document.getElementById('modal-status'),
+    category: document.getElementById('modal-category'),
+    comment: document.getElementById('modal-comment'),
+    tier: document.getElementById('modal-tier'),
+    details: document.getElementById('modal-details'),
+    tags: document.getElementById('modal-tags'),
+    dietNote: document.getElementById('modal-diet-note'),
+    starLink: document.getElementById('modal-star-link')
+  };
+
+  function openModal(key, sectionKey) {
+    const r = data.find(x => snackKey(x) === key);
+    if (!r) return;
+    modal.photo.innerHTML = iconOrPlaceholder(r.type);
+    modal.name.textContent = snackName(r);
+    modal.loc.textContent = [r.flavour, r.country ? `${r.country} version` : '', r.type].filter(Boolean).join(' · ');
+    if (r.discontinued) {
+      modal.status.textContent = r.date_discontinued ? `Discontinued (${r.date_discontinued})` : 'Discontinued';
+      modal.status.hidden = false;
+    } else {
+      modal.status.hidden = true;
+    }
+    const cats = (r.categories || []).filter(c => CATEGORY_LABEL[c]);
+    const ordered = (sectionKey && cats.includes(sectionKey))
+      ? [sectionKey, ...cats.filter(c => c !== sectionKey)]
+      : cats;
+    if (ordered.length) {
+      modal.category.innerHTML = ordered.map(c =>
+        `<span class="guide-modal-category cat-${c}">${escapeHtml(CATEGORY_LABEL[c])}</span>`
+      ).join('');
+      modal.category.hidden = false;
+    } else {
+      modal.category.hidden = true;
+    }
+    // Hamish's own words only: placeholder until he writes a comment.
+    modal.comment.innerHTML = r.comment
+      ? `<p>${escapeHtml(r.comment)}</p>`
+      : '<p><!-- TODO(Hamish): your comment about this snack --> placeholder text</p>';
+    if (r.tier === 'No Star') {
+      modal.tier.innerHTML = `<div class="dish-row no-star">${escapeHtml(r.tier)}</div>`;
+    } else if (r.tier) {
+      const st = TIER_STYLE[r.tier];
+      modal.tier.innerHTML = `<div class="dish-row" style="background:${st.tint}; color:${st.ink};">${escapeHtml(r.tier)}</div>`;
+    } else {
+      modal.tier.innerHTML = '';
+    }
+    const size = r.size_amount === null || r.size_amount === undefined ? null
+      : `${Number(r.size_amount)}${r.size_unit}${r.pack_note ? ` (${r.pack_note})` : ''}`;
+    const rows = [
+      ['Size', size],
+      ['Price', money(r.price, r.currency)],
+      [r.size_unit === 'ml' ? 'Per 100ml' : 'Per 100g', per100(r)],
+      ['Where to buy', (r.retailers || []).length ? r.retailers.join(', ') : null],
+      ['Edition', r.special_edition ? (r.edition_note || 'Special edition') : null]
+    ].filter(x => x[1]);
+    modal.details.innerHTML = rows.map(x => `<div><dt>${escapeHtml(x[0])}</dt><dd>${escapeHtml(x[1])}</dd></div>`).join('');
+    modal.tags.innerHTML = (r.dietary || []).map(t => `<span>${escapeHtml(t)}</span>`).join('');
+    modal.dietNote.hidden = !(r.dietary || []).length;
+    modal.starLink.href = 'https://hamilinstar.com/snacks.html?q=' + encodeURIComponent([r.brand, r.product, r.flavour].filter(Boolean).join(' '));
+    modal.backdrop.classList.add('open');
+  }
+
+  function closeModal() { modal.backdrop.classList.remove('open'); }
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  modal.backdrop.addEventListener('click', e => { if (e.target === modal.backdrop) closeModal(); });
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+
+  render();
+})();
+</script>
+
+</body>
+</html>

@@ -26,6 +26,7 @@
   --nostar-tint: #E7B8B8;
   --nostar-ink: #7A1F1F;
   --cat-top_picks: #BA0B2F;
+  --cat-worth_a_try: #7A4FA3; /* purple, chosen by Hamish 'for now' 2026-11-19 (silver was the alternative) */
   --cat-gelato_guru: #03cafc; /* trying another cyan 2026-08-19, exploratory per Hamish — was #3B6EA5, then #00e5ff */
   --cat-gone_but_not_forgotten: #9B9B93;
   --cat-desserts: #C2708A; /* dusty rose, first pass — not yet confirmed with Hamish */
@@ -450,6 +451,7 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   border-radius: 3px;
 }
 .guide-modal-category.cat-top_picks { background: var(--cat-top_picks); color: var(--paper); }
+.guide-modal-category.cat-worth_a_try { background: var(--cat-worth_a_try); color: var(--paper); }
 .guide-modal-category.cat-gelato_guru { background: var(--cat-gelato_guru); color: var(--paper); }
 .guide-modal-category.cat-gone_but_not_forgotten { background: var(--cat-gone_but_not_forgotten); color: var(--ink); }
 .guide-modal-category.cat-desserts { background: var(--cat-desserts); color: var(--paper); }
@@ -492,3 +494,11 @@ footer a:hover, footer a:focus-visible { color: var(--ink); border-color: var(--
   white-space: nowrap;
   border: 0;
 }
+
+/* ---------- Snacks page (draft 2026-11-19): reuses existing tokens, no new colours ---------- */
+.rcard-sub { font-size: 0.78rem; color: var(--ink-soft); margin-top: 0.15rem; }
+.snack-details { margin: 0.9rem 0 0; font-size: 0.85rem; }
+.snack-details > div { display: flex; justify-content: space-between; gap: 1rem; padding: 0.3rem 0; border-bottom: 1px solid var(--hairline); }
+.snack-details dt { color: var(--ink-soft); }
+.snack-details dd { margin: 0; text-align: right; }
+.snack-diet-note { color: var(--ink-muted); font-size: 0.7rem; margin: 0.4rem 0 0; }

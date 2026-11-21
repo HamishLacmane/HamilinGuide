@@ -30,3 +30,17 @@ _Entries up to 2026-10-10 were backfilled from memory notes and CLAUDE.md histor
 - 2026-11-01 — [change] Re-ran guide export after the Nando's Cabot Place visits (28 and 29 Oct 2026, 4 reconfirmed dishes); guide.json 70 records, output byte-identical to the committed data (no exported field changed). Not yet committed.
 - 2026-11-08 — [change] Re-ran guide export after the 2-7 Nov 2026 visits batch; guide.json 70 records, output byte-identical to the committed data (no Guide field changed). Not yet committed.
 - 2026-11-16 — [change] Re-exported guide.json (71, was 70): adds The Veg Box Cafe (Top Picks, Still Cooking). Not yet committed.
+- 2026-11-19 — [change] Re-ran guide export; guide.json still 71 records but changed: Nando's Canary Wharf - Cabot Place Sunset Burger tier Gold -> Silver (Seoul90 has no Guide category). Not yet committed.
+- 2026-11-19 — [change] Re-exported guide.json (72, was 71): adds Seoul90 Korean Restaurant (Top Picks + Amazing Value, Still Cooking; 5 dishes: 2 Bronze, 3 Gold). Not yet committed.
+- 2026-11-19 — [change] Added snack export: data/snacks.json now published (empty [] for now — no snack has a Guide category and none is discontinued Gold).
+- 2026-11-19 — [change] Re-exported snacks.json from Postgres: still [] (no snack has a Guide category and none are discontinued Gold); restaurant guide unchanged. Not committed.
+- 2026-11-19 — [change] Draft HamilinGuide/snacks/index.html + Snacks nav pill (index, about, snacks) + snack CSS appended to styles.css; reads ../data/snacks.json (currently [] — no snack has a Guide category). Not committed.
+- 2026-11-19 — [change] Re-exported Guide data after snack dietary-tag updates; guide.json and snacks.json ([]) unchanged.
+- 2026-11-19 — [change] AGENTS.md: added the 'Pre-push visual check' standing rule (all pages at phone/tablet/laptop/desktop sizes before any push) + CLAUDE.md pointer. Not committed.
+- 2026-11-19 — [change] Re-exported all five JSON files from Postgres: data/snacks.json now holds the 7 Gold snacks (derived Top Picks; Sainsbury's Bourbon also Amazing Value), previously empty; guide.json unchanged. Not committed.
+- 2026-11-19 — [change] Re-exported snacks.json: new Worth a Try category (2 Silver snacks added, 9 total) and 'Most shops' is now exclusive in retailers.
+- 2026-11-21 — [change] Re-exported all five exports after adding Pure (restaurants 555, awards 851); guide.json (72) and snacks.json (9) unchanged as Pure has no Guide category. Not committed.
+- 2026-11-21 — [change] Re-exported all five exports after Shayona Restaurant visit (restaurants 555, awards 852); guide.json (72) and snacks.json (9) unchanged as Shayona has no Guide category change. Not committed.
+- 2026-11-21 — [change] Guide Snacks icons updated: chocolate, candy, paper-bag (crisps, stopgap), cookie; Tabler 3.44.0. Not committed.
+- 2026-11-21 — [change] Re-exported Guide snacks.json (44 snacks: 22 top picks, 21 worth a try, 1 gone but not forgotten, plus Sainsbury's Bourbon also amazing value); guide.json unchanged. Not committed.
+- 2026-11-21 — [change] Pre-push visual check passed (all pages, 7 sizes, no overflow/console errors); committing + pushing on feature/snacks-and-nov-restaurant-update.
