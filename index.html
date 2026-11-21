@@ -33,6 +33,7 @@
     </div>
     <div class="nav-pills">
       <span class="nav-pill active">Restaurants</span>
+      <a class="nav-pill" href="/snacks/">Snacks</a>
       <span class="nav-pill soon">Hotels · coming soon</span>
       <span class="nav-pill soon">Travel guides · coming soon</span>
       <a class="nav-star-link" href="https://hamilinstar.com" target="_blank" rel="noopener">See every rating on Hamilin Star ↗</a>
@@ -79,6 +80,12 @@
     <h2>Top Picks <span style="color: var(--ink-muted); font-size: 0.9rem;">(Recommended)</span></h2>
     <p class="section-desc">Best places in the world I've tried so far!</p>
     <div class="card-grid" id="section-top_picks"></div>
+  </section>
+
+  <section class="guide-section">
+    <h2>Worth a Try</h2>
+    <p class="section-desc"><!-- TODO(Hamish): description for Worth a Try --> placeholder text</p>
+    <div class="card-grid" id="section-worth_a_try"></div>
   </section>
 
   <section class="guide-section">
@@ -144,6 +151,7 @@
 (async function () {
   const SECTIONS = [
     { key: 'top_picks', el: 'section-top_picks' },
+    { key: 'worth_a_try', el: 'section-worth_a_try' },
     { key: 'gelato_guru', el: 'section-gelato_guru' },
     { key: 'gone_but_not_forgotten', el: 'section-gone_but_not_forgotten' },
     { key: 'amazing_value', el: 'section-amazing_value' },
@@ -158,6 +166,7 @@
   };
   const CATEGORY_LABEL = {
     top_picks: 'Top Picks',
+    worth_a_try: 'Worth a Try',
     gelato_guru: "The Gelato Guru's Faves",
     gone_but_not_forgotten: 'Gone But Not Forgotten',
     amazing_value: 'Amazing Value',

@@ -77,6 +77,8 @@ No LICENSE file by design — all rights reserved by default. Don't add an open-
 
 ## Git workflow
 
+**Before any push: do the "Pre-push visual check" in `AGENTS.md`** (every page at phone, tablet, laptop and desktop sizes; no horizontal scroll, no console errors, text and nav wrap sensibly, screenshots looked at). Do not push if it fails.
+
 `gh` CLI is not installed on this machine — PRs can't be created programmatically. Push the feature branch and hand Hamish the GitHub "create PR" URL GitHub prints on push. After Hamish merges, check whether the branch still exists on origin before reusing it — he periodically deletes merged branches via the GitHub UI.
 
 ## Project log
